@@ -11,5 +11,6 @@ int main(){
 	cout << bst.root->data << endl;
 	cout << bst.root->LeftChild->data << endl;
 	cout << bst.root->RightChild->data << endl;
+	cout << bst.FindNode(2) << endl;
 	return 0;
 }

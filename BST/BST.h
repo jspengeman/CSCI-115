@@ -57,7 +57,26 @@ class BST {
 			}
 		};
 
-		void FindNode();
+		bool FindNode(int data){
+			Node *curr = root;
+
+			while (curr != NULL){
+				// Checks if current node is target
+				if (curr->data == data){
+					return true;
+				}
+				// If data is less then curr data go left
+				else if (curr->data > data){
+					curr = curr->LeftChild;
+				}
+				// If data is less then curr data go right
+				else if (curr->data < data){
+					curr = curr->RightChild;
+				}
+			}
+			return false;
+		};
+
 		int count;
 		Node* root;
 };
