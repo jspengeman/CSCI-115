@@ -6,8 +6,10 @@ using namespace std;
 int main(){
 	int x = 5;
 	BST bst(x);
-	bst.InsertNode(8);
+	bst.InsertNode(3);
+	bst.InsertNode(6);
 	cout << bst.root->data << endl;
+	cout << bst.root->LeftChild->data << endl;
 	cout << bst.root->RightChild->data << endl;
 	return 0;
 }

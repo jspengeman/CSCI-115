@@ -19,7 +19,7 @@ class BST {
 			root = new_root;
 			root->LeftChild = NULL;
 			root->RightChild = NULL;
-			this.count = 1;
+			count = 1;
 		};
 
 		void InsertNode(int data){
@@ -28,20 +28,28 @@ class BST {
 			Node* new_node = new Node(data);
 			new_node->LeftChild = NULL;
 			new_node->RightChild = NULL;
-			
+
 			while (curr != NULL){
-				if (curr->data < data){
+				// If data is less then curr root go left
+				if (curr->data > data){
+					// If NULL make child
 					if (curr->LeftChild == NULL){
 						curr->LeftChild = new_node;
+						break;
 					}
+					// If not NULL iterate forward
 					else {
 						curr = curr->LeftChild;
 					}
 				}
-				else if (curr->data > data){
+				// If data is greater then curr root go right
+				else if (curr->data < data){
+					// If NULL make child
 					if (curr->RightChild == NULL){
 						curr->RightChild = new_node;
+						break;
 					}
+					// If not NULL iterate forward
 					else {
 						curr = curr->LeftChild;
 					}
