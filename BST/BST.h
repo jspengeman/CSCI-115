@@ -51,7 +51,7 @@ class BST {
 					}
 					// If not NULL iterate forward
 					else {
-						curr = curr->LeftChild;
+						curr = curr->RightChild;
 					}
 				}
 			}
