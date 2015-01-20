@@ -77,6 +77,25 @@ class BST {
 			return false;
 		};
 
+
+		bool isBST(Node* curr){
+			int curr_data = curr->data;
+
+			if (curr == NULL){ return true; }
+
+			isBST(curr->LeftChild);
+			isBST(curr->RightChild);
+
+			if (curr_data < curr->LeftChild->data){
+				return false;
+			}
+			else if (curr_data > curr->RightChild->data){
+				return false;
+			}
+		}
+
+
+
 		int count;
 		Node* root;
 };
