@@ -158,12 +158,37 @@ void graph::list_all_edges(int num_of_vertices)
 
 void graph::list_all_neighbors(int vertex1, int num_of_vertices)
 {  
-     //implement this function  
+    // I useded print row to display a row so this will 
+    // display all neighbors of a specific vertex just dandy
+    print_row(vertex1);
 }
 
 void graph::no_incoming_edges(int num_of_vertices)
 { 
-     //implement this function  
+    // Intializes the array that will represent 
+    // whether the value at that specific index
+    // of the array has incoming edges or not
+    bool incoming[num_of_vertices];
+    for (int y = 0; y < num_of_vertices; y++){
+        incoming[y] = false;
+    }
+
+    // For every edge that exists flag the vertex
+    // It points to in the array index as true
+    for (int j = 0; j < adj_list.size(); j++){
+        for (graph *curr = adj_list.at(j)->head; curr != NULL; curr = curr->next){ 
+            incoming[curr->edge] = true;
+        }   
+    }
+
+    // For every bool in the array that is false
+    // Display that it has no edges pointing to it
+    for (int x = 0; x < num_of_vertices; x++){
+        if (incoming[x] == false){
+            cout << "Vertex number " << x << " has no incoming edges" << endl;
+        }
+    }
+
 }
 
 
