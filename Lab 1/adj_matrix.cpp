@@ -7,55 +7,88 @@ using namespace std;
 
 vector< vector<graph> > adj_matrix; //two dimensional vector to represent the adjacency matrix
 
+void graph::print_row(int index){
+  cout << index << ": ";
+  int size = adj_matrix.at(index).size();
+
+  for (int x = 0; x < size; x++){
+      if (adj_matrix[index][x].edge == 1){
+        cout << x << ", ";
+      }
+  }
+
+  cout << endl;
+}
+
 void graph::initialize_graph(int num_of_vertices, int num_of_edges)
 {
+  // Declare a vector that will go inside the 2D vector
+  graph empty;
+  empty.edge = 0;
+  vector<graph> temp;
+  temp.resize(num_of_vertices);
 
-  //implement this function
+  // Intialize that vector to all zeros
+  for (int y = 0; y < num_of_vertices; y++){
+    temp.at(y) = empty;
+  }
 
-  cout<<endl<<endl<<endl;
-    
+  // Put those vectors inside the 2D vector
+  adj_matrix.resize(num_of_vertices);
+  for (int x = 0; x < num_of_vertices; x++){
+    adj_matrix.at(x) = temp;   
+  }
+
+  // Insert desired number of edges
+  for (int j = 0; j < num_of_edges; j++){
+    cout << "Input edge in the X Y format" << endl;
+    int vert1, vert2;
+    cin >> vert1 >> vert2;
+    insert_edge(vert1, vert2);
+  }
 }
 
 void graph::insert_edge(int vertex1, int vertex2)
 {
- 
- //implement this function
- 
- cout<<endl<<endl<<endl;
-  
+  int num_of_vertices = adj_matrix.size();
+  bool isDuplicate = false;
+  if (vertex2 > num_of_vertices - 1){
+    cout << "Error: No number " << vertex2 << " node in graph" << endl; 
+    isDuplicate = true;
+  }
+
+  if (adj_matrix[vertex1][vertex2].edge == 1 || isDuplicate == true){
+    cout << "Edge is already present or vertex doesn't exist" << endl;
+    int vert1, vert2;
+    cout << "Enter two values that actually work: " << endl;
+    cin >> vert1 >> vert2;
+    insert_edge(vert1, vert2);
+  }
+  else {
+    adj_matrix[vertex1][vertex2].edge = 1;
+  }
 }
 
 void graph::delete_edge(int vertex1, int vertex2)
 {
-  
-  //implement this function
-  
- cout<<endl<<endl<<endl;
 
 }
 
 void graph::list_all_edges(int num_of_vertices)
 {
-     
-    //implement this function  
-
-   cout<<endl<<endl<<endl;
+  for (int x = 0; x < num_of_vertices; x++){
+    print_row(x);   
+  }
 }
 
 void graph::list_all_neighbors(int vertex1, int num_of_vertices)
 {  
- 
-     //implement this function  
-      
-   cout<<endl<<endl<<endl;
+
 }
 
 void graph::no_incoming_edges(int num_of_vertices)
 {
     
-     //implement this function  
-
-    cout<<endl<<endl<<endl;
 }
 
 
@@ -120,9 +153,7 @@ int main(){
                 
                   
         } //end switch
-    
-     
-    
+        cout<<endl<<endl<<endl;
     }  //end while
     return 0;
 }

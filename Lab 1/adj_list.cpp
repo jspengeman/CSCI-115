@@ -69,6 +69,7 @@ void graph::insert_edge(int vertex1, int vertex2){
 
     // Restart the function so that it inserts the correct number of edges
     if (isPresent == true){
+        cout << "Edge is already present, try again" << endl;
         int vert1, vert2;
         cout << "Enter two values that actually work: " << endl;
         cin >> vert1 >> vert2;
@@ -76,8 +77,7 @@ void graph::insert_edge(int vertex1, int vertex2){
     }
 }
 
-void graph::delete_edge(int vertex1, int vertex2)
-{  
+void graph::delete_edge(int vertex1, int vertex2){  
     // This is the worst spaghetti code I have written
     // God bless the poor soul who reads this. RIP your brain.
     // I will try my best to outline all of the cases that are covered
@@ -149,22 +149,19 @@ void graph::delete_edge(int vertex1, int vertex2)
     }
 }
 
-void graph::list_all_edges(int num_of_vertices)
-{    
+void graph::list_all_edges(int num_of_vertices){    
     for (int x = 0; x < num_of_vertices; x++){
         print_row(x);
     }  
 }
 
-void graph::list_all_neighbors(int vertex1, int num_of_vertices)
-{  
+void graph::list_all_neighbors(int vertex1, int num_of_vertices){  
     // I useded print row to display a row so this will 
     // display all neighbors of a specific vertex just dandy
     print_row(vertex1);
 }
 
-void graph::no_incoming_edges(int num_of_vertices)
-{ 
+void graph::no_incoming_edges(int num_of_vertices){ 
     // Intializes the array that will represent 
     // whether the value at that specific index
     // of the array has incoming edges or not
