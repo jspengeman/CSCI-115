@@ -71,11 +71,15 @@ void graph::insert_edge(int vertex1, int vertex2)
 
 void graph::delete_edge(int vertex1, int vertex2)
 {
-
+  adj_matrix.at(vertex1).at(vertex2).edge = 0;
 }
 
 void graph::list_all_edges(int num_of_vertices)
 {
+  // Display all edges in the form
+  // vertex : edge, edge, edge
+  // vertex : edge, edge, edge
+  // vertex : edge, edge, edge
   for (int x = 0; x < num_of_vertices; x++){
     print_row(x);   
   }
@@ -83,12 +87,39 @@ void graph::list_all_edges(int num_of_vertices)
 
 void graph::list_all_neighbors(int vertex1, int num_of_vertices)
 {  
-
+  // Display all neighbors in the form
+  // vertex : edge, edge, edge
+  print_row(vertex1);
 }
 
 void graph::no_incoming_edges(int num_of_vertices)
 {
-    
+  // Delcare an array of bools representing
+  // wheter the vertex at that specific index
+  // has any edges pointing to it 
+  bool incoming[num_of_vertices];
+  for (int i = 0; i < num_of_vertices; i++){
+    incoming[i] = false;
+  }
+
+  // If an edge points to a vertex set that index
+  // Equal to true, to represent it has an
+  // Incoming edge
+  for (int x = 0; x < num_of_vertices; x++){
+    for (int y = 0; y < num_of_vertices; y++){
+      if (adj_matrix[x][y].edge == 1){
+        int vertex_index = y;
+        incoming[vertex_index] = true;
+      }
+    }
+  }
+
+  // Display all vertexs with no incoming edges
+  for (int j = 0; j < num_of_vertices; j++){
+    if (incoming[j] == false){
+      cout << "Vertex number " << j << " has no incoming edges" << endl;
+    }
+  }
 }
 
 
