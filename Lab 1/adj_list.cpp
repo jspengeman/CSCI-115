@@ -193,9 +193,9 @@ int main(){
     int num_of_vertices, num_of_edges, vertex1, vertex2, function;
     graph graph_obj;
     
-    
+    // The TA gave us this code. If you are my future employer,
+    // please know I would never do a while(1) loop.
     while(1){
-        
         cout<<"1 - initialize graph" <<endl;
         cout<<"2 - insert an edge to the graph" <<endl;
         cout<<"3 - delete an edge from the graph" <<endl;

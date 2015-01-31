@@ -103,8 +103,7 @@ void graph::no_incoming_edges(int num_of_vertices)
   }
 
   // If an edge points to a vertex set that index
-  // Equal to true, to represent it has an
-  // Incoming edge
+  // Equal to true, to represent it has an incoming edge
   for (int x = 0; x < num_of_vertices; x++){
     for (int y = 0; y < num_of_vertices; y++){
       if (adj_matrix[x][y].edge == 1){
@@ -128,9 +127,9 @@ int main(){
     int num_of_vertices, num_of_edges, vertex1, vertex2, function;
     graph graph_obj;
     
-    
+    // The TA gave us this code. If you are my future employer,
+    // please know I would never do a while(1) loop.
     while(1){
-        
         cout<<"1 - initialize graph" <<endl;
         cout<<"2 - insert an edge to the graph" <<endl;
         cout<<"3 - delete an edge from the graph" <<endl;
