@@ -1,3 +1,7 @@
+// Jonathan D. Spengeman
+// Code also available on github at: https://github.com/jspengeman/CSCI-115/tree/master/Lab%201
+
+
 class graph //class for the graph data structure
 {
     public:  
