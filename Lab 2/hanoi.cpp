@@ -38,9 +38,6 @@ void HanoiTower::move(int start, int goal){
 
 void HanoiTower::solve_prime(int n, int start, int goal, int temp){
 	// Adapted the solution from the textbook to fit my needs
-	cout << endl;
-	display();
-	cout << endl;
 	if (n == 0) return; 
 	solve_prime(n - 1, start, temp, goal);
 	move(start, goal);
