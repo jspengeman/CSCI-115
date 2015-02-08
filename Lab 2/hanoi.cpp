@@ -45,15 +45,13 @@ void HanoiTower::solve_prime(int n, int start, int goal, int temp){
 }
 
 void HanoiTower::solve(int n){
-	/* Since tower 2 would contain N + 1 to 2N rings we also 
-	 * need to move those as well. Those should all be moved
-	 * first since they are going to be larger. Since they are
-	 * larger it is really like two sub problems. Move the rings 
-	 * from tower 0 to tower 1 so all rings are on one tower. 
-	 * Then move the rings from tower 1 to tower 2 using tower 0
-	 * as a temporary location. Before the second call to solve 
-	 * prime there are 2N rings on that tower so it should be 
-	 * called again with a 2N as the size.
+	/* Step 1: Tower 0 contains rings 1 to N and tower 1 contains rings N + 1 to N.
+	 * Move rings 1 to N to tower 1 using tower 2 as a spare. This collects all rings
+	 * to tower 1.
+	 *
+	 * Step 2: Tower 1 now contains rings 1 to 2N, now solve prime can be called to 
+	 * move all rings on tower 1 to tower 2 using tower 0 as a spare. Solve prime
+	 * is called using 2 * n as the size because tower 1 contains all of the rings.
 	 */
 	solve_prime(n, 0, 1, 2);
 	solve_prime(2 * n, 1, 2, 0);
