@@ -4,8 +4,11 @@
 using namespace std;
 
 int main(){
-	HanoiTower hanoi_tower(5);
+	int n;
+	cout << "Enter an integer: ";
+	cin >> n;
+	HanoiTower hanoi_tower(n);
 	hanoi_tower.display();
-	hanoi_tower.solve(5, 0, 2, 1);
+	hanoi_tower.solve(n);
 	hanoi_tower.display();
 }
