@@ -24,7 +24,7 @@ int main() {
 }
 
 void std_permute(vector<int> list){
-    // Using std::algorithm to implement permutations
+    // Using std::algorithm and vectors to implement permutations
     do {
         for (int i = 0; i < list.size(); i++){
             cout << list[i] << " ";
