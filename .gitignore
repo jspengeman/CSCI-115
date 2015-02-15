@@ -29,3 +29,6 @@
 *.app
 
 main
+*.pdf
+*/.DS_STORE
+.DS_STORE
