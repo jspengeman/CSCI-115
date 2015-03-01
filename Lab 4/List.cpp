@@ -70,18 +70,30 @@ public:
 	}
 
 	void prepend(const E& item){
-
+		// Intialize new node and move pointers
+		Link<E> new_node = new Link<E>;
+		new_node->element = item;
+		new_node->next = head->next;
+		head->next = new_node;
 	}
 
 	void append(const E& item){
-
+		// Inserts a node using a copying method
+		Link<E> new_node = new Link<E>;
+		tail->next = new_node;
+		tail->element = item;
+		tail = tail->next;
 	}
 
 	void moveToStart(){
-
+		current = head->next;
 	}
 
 	bool next(){
+		if (current->next != tail){
+			current = current->next;
+			return true;
+		}
 		return false;
 	}
 
@@ -90,7 +102,6 @@ public:
 	}
 
 	int numActive(){
-		// 
 		return current->active_nodes;
 	}
 
