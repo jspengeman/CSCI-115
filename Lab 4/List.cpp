@@ -13,7 +13,7 @@ public:
 	E element;
 	Link *next;
 
-	Link(E &elemval){
+	Link(E elemval){
 		element = elemval;
 		next = NULL; 
 	}
@@ -22,7 +22,7 @@ public:
 	void* operator new(size_t) { 
 		if (freelist == NULL) {
 			active_nodes++;
-			return ::new Link;
+			return ::new Link<E>;
 		}
 		Link<E>* temp = freelist; 
 		freelist = freelist->next;
@@ -36,12 +36,8 @@ public:
 		freelist = (Link<E>*)ptr;
 	}
 
-	void setFreeNodes(){
-		free_nodes = 0;
-	}
-
-	void setActiveNodes(){
-		free_nodes = 0;
+	void viewActive(){
+		cout << active_nodes << endl;
 	}
 };
 
@@ -86,10 +82,12 @@ public:
 	}
 
 	void moveToStart(){
+		// Set current to first node
 		current = head->next;
 	}
 
 	bool next(){
+		// Move to next if not at the tail
 		if (current->next != tail){
 			current = current->next;
 			return true;
@@ -98,18 +96,32 @@ public:
 	}
 
 	const E& getValue() const{
+		// Return the value of the current value
 		return current->element;
 	}
 
 	int numActive(){
+		// Return static value of active nodes
 		return current->active_nodes;
 	}
 
 	int numFree(){
+		// Return static value of free nodes
 		return current->free_nodes;
 	}
 };
 
+// Um, I didn't really know how else to intialize these
+// Although doing it this way makes me cringe.
+template <typename E>
+int Link<E>::active_nodes = 0;
+template <typename E>
+int Link<E>::free_nodes = 0;
+template <typename E>
+Link<E> *Link<E>::freelist = NULL;
+
 int main(){
+	Link<char> *test = new Link<char>('A');
+	test->viewActive();
 	return 0;
 }
