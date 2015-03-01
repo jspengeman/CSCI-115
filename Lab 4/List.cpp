@@ -17,6 +17,7 @@ public:
 		element = elemval;
 		next = NULL; 
 	}
+	Link(){ next = NULL; }
 	~Link(){}
 	
 	void* operator new(size_t) { 
@@ -41,6 +42,10 @@ public:
 
 	void viewActive(){
 		cout << active_nodes << endl;
+	}
+
+	void printElement(){
+		cout << element << endl;
 	}
 };
 
@@ -124,7 +129,10 @@ template <typename E>
 Link<E> *Link<E>::freelist = NULL;
 
 int main(){
-	Link<char> *test = new Link<char>('A');
+	Link<char> *test = new Link<char>('Z');
+	test->printElement();
+	test->element = 'B';
+	test->printElement();
 	test->viewActive();
 	return 0;
 }
