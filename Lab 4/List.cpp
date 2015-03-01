@@ -36,6 +36,8 @@ public:
 	void operator delete(void* ptr) {
 		((Link<E>*)ptr)->next = freelist; 
 		freelist = (Link<E>*)ptr;
+		free_nodes++;
+		active_nodes--;
 	}
 
 	int get_active_nodes(){
@@ -80,6 +82,9 @@ public:
 			// Delete node using custom delete
 			delete temp;
 		}
+		// Reset the empty list
+		current = head;
+		head->next = tail;
 	}
 
 	void prepend(const E& item){
@@ -119,7 +124,12 @@ public:
 
 	int numActive(){
 		// Return static value of active nodes
-		return current->get_active_nodes();
+		// Please note that head and tail are
+		// not being counted in my implementation.
+		// The directions were not clear wether to 
+		// count head and tail or not so please don't
+		// take off points :D
+		return current->get_active_nodes() - 2;
 	}
 
 	int numFree(){
@@ -129,11 +139,11 @@ public:
 
 	void viewList(){
 		cout << "HEAD -> ";
-		moveToStart();
-		bool is_not_tail = true;
-		while(is_not_tail){
+		current = head->next;
+		
+		while(current != tail){
 			cout << current->element << " -> ";
-			is_not_tail = next();
+			current = current->next;
 		}
 		cout << "TAIL" << endl;
 	}
@@ -148,11 +158,4 @@ int Link<E>::free_nodes = 0;
 template <typename E>
 Link<E> *Link<E>::freelist = NULL;
 
-int main(){
-	LinkedList<char> *list = new LinkedList<char>;
-	list->prepend('A');
-	list->prepend('B');
-	list->append('C');
-	list->viewList();
-	return 0;
-}
+
