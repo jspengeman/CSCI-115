@@ -123,12 +123,13 @@ public:
 	}
 
 	int numActive(){
-		// Return static value of active nodes
-		// Please note that head and tail are
-		// not being counted in my implementation.
-		// The directions were not clear wether to 
-		// count head and tail or not so please don't
-		// take off points :D
+		/* Return static value of active nodes
+		 * Please note that head and tail are
+		 * not being counted in my implementation.
+		 * The directions were not clear wether to 
+		 * count head and tail or not so please don't
+		 * take off points :D
+		 */ 
 		return current->get_active_nodes() - 2;
 	}
 
