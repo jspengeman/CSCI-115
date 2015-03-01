@@ -22,7 +22,10 @@ public:
 	void* operator new(size_t) { 
 		if (freelist == NULL) {
 			active_nodes++;
-			return ::new Link<E>;
+			// This line of code seems to be stopping me from 
+			// declaring a new node using the systems new op
+			Link<E> *temp = ::new Link<E>;
+			return temp;
 		}
 		Link<E>* temp = freelist; 
 		freelist = freelist->next;
