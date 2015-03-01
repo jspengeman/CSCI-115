@@ -40,6 +40,14 @@ public:
 		freelist = (Link<E>*)ptr;
 	}
 
+	int get_active_nodes(){
+		return active_nodes;
+	}
+
+	int get_free_nodes(){
+		return free_nodes;
+	}
+
 	void viewActive(){
 		cout << active_nodes << endl;
 	}
@@ -75,7 +83,7 @@ public:
 
 	void prepend(const E& item){
 		// Intialize new node and move pointers
-		Link<E> new_node = new Link<E>;
+		Link<E> *new_node = new Link<E>;
 		new_node->element = item;
 		new_node->next = head->next;
 		head->next = new_node;
@@ -83,7 +91,7 @@ public:
 
 	void append(const E& item){
 		// Inserts a node using a copying method
-		Link<E> new_node = new Link<E>;
+		Link<E> *new_node = new Link<E>;
 		tail->next = new_node;
 		tail->element = item;
 		tail = tail->next;
@@ -100,7 +108,7 @@ public:
 			current = current->next;
 			return true;
 		}
-		return false;
+		return false;	
 	}
 
 	const E& getValue() const{
@@ -110,12 +118,23 @@ public:
 
 	int numActive(){
 		// Return static value of active nodes
-		return current->active_nodes;
+		return current->get_active_nodes();
 	}
 
 	int numFree(){
 		// Return static value of free nodes
-		return current->free_nodes;
+		return current->get_free_nodes();
+	}
+
+	void viewList(){
+		cout << "HEAD -> ";
+		moveToStart();
+		bool is_not_tail = true;
+		while(is_not_tail){
+			cout << current->element << " -> ";
+			it_not_tail = next();
+		}
+		cout << "TAIL" << endl;
 	}
 };
 
@@ -129,10 +148,10 @@ template <typename E>
 Link<E> *Link<E>::freelist = NULL;
 
 int main(){
-	Link<char> *test = new Link<char>('Z');
-	test->printElement();
-	test->element = 'B';
-	test->printElement();
-	test->viewActive();
+	LinkedList<char> *list = new LinkedList<char>;
+	list->prepend('A');
+	list->prepend('B');
+	list->append('C');
+	list->viewList();
 	return 0;
 }
