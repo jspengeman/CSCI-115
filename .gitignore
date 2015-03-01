@@ -30,5 +30,6 @@
 
 main
 *.pdf
+*.png
 */.DS_STORE
 .DS_STORE
