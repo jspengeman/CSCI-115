@@ -23,8 +23,6 @@ public:
 	void* operator new(size_t) { 
 		if (freelist == NULL) {
 			active_nodes++;
-			// This line of code seems to be stopping me from 
-			// declaring a new node using the systems new op
 			Link<E> *temp = ::new Link<E>;
 			return temp;
 		}
@@ -75,8 +73,11 @@ public:
 	~LinkedList(){}
 
 	void clear(){
-		for(current = head->next; current!=tail; current = current->next){
+		current = head->next; 
+		while(current!=tail){
 			Link<E> *temp = current;
+			current = current->next;
+			// Delete node using custom delete
 			delete temp;
 		}
 	}
@@ -132,7 +133,7 @@ public:
 		bool is_not_tail = true;
 		while(is_not_tail){
 			cout << current->element << " -> ";
-			it_not_tail = next();
+			is_not_tail = next();
 		}
 		cout << "TAIL" << endl;
 	}
