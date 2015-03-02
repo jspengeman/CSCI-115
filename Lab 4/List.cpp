@@ -1,5 +1,6 @@
 #include <iostream>
-#include <vector>
+#include <locale>
+#include <string>
 #include "List.h"
 
 using namespace std;
@@ -147,6 +148,34 @@ public:
 			current = current->next;
 		}
 		cout << "TAIL" << endl;
+	}
+
+	void inputList(string input){
+		bool startsWithReg = false;
+		bool containsEquals = false;
+
+		// Checks if first char is digit
+		if (isdigit(input[0])){
+			cout << "variable expected" << endl;
+			return;
+		}
+
+		// Checks if string starts with lower case char
+		if (isalpha(input[0]) && islower(input[0])){
+			cout << "Register" << endl;
+			startsWithReg = true;
+			
+			// Checks rest of string
+			for(int i = 1; i < input.size(); i++){
+				// Checks if second char is a digit
+				if (i - 1 == 0 && isdigit(input[i])){
+					cout << "'=' expected";
+					break;
+				}
+			}			
+		}
+
+		
 	}
 };
 
