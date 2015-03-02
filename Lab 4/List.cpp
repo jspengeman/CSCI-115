@@ -168,9 +168,35 @@ public:
 			// Checks rest of string
 			for(int i = 1; i < input.size(); i++){
 				// Checks if second char is a digit
-				if (i - 1 == 0 && isdigit(input[i])){
-					cout << "'=' expected";
-					break;
+				if (!containsEquals){
+					if (isspace(input[i])) {
+						continue;
+					}
+					else if (isdigit(input[i])){
+						cout << "'=' expected" << endl;
+						break;
+					}
+				}
+				// Looking for an equal sign, skipping spaces
+				// Once an equal sign is found spaces won't be 
+				// validated the same way
+				if (startsWithReg && !containsEquals){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (input[i] == '='){
+						containsEquals = true;
+					}
+				}
+
+				if (containsEquals){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (input[i] == '+'){
+						cout << "variable or number expected" << endl;
+						break;
+					}
 				}
 			}			
 		}

@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 	LinkedList<char> *list = new LinkedList<char>;
-	string x = "a9BC";
+	string x = "a  9=  +  BC";
 	list->inputList(x);
 
 	return 0;
