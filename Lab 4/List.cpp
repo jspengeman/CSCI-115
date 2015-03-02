@@ -153,6 +153,9 @@ public:
 	void inputList(string input){
 		bool startsWithReg = false;
 		bool containsEquals = false;
+		bool containsOp = false;
+		bool hasFirstOp = false;
+		bool hasSecondOp = false;
 
 		// Checks if first char is digit
 		if (isdigit(input[0])){
@@ -162,12 +165,11 @@ public:
 
 		// Checks if string starts with lower case char
 		if (isalpha(input[0]) && islower(input[0])){
-			cout << "Register" << endl;
 			startsWithReg = true;
 			
 			// Checks rest of string
 			for(int i = 1; i < input.size(); i++){
-				// Checks if second char is a digit
+				// Checks for out of place digit
 				if (!containsEquals){
 					if (isspace(input[i])) {
 						continue;
@@ -177,6 +179,7 @@ public:
 						break;
 					}
 				}
+
 				// Looking for an equal sign, skipping spaces
 				// Once an equal sign is found spaces won't be 
 				// validated the same way
@@ -189,13 +192,28 @@ public:
 					}
 				}
 
+				// Checks for an out of place operator
 				if (containsEquals){
 					if (isspace(input[i])){
 						continue;
 					}
-					else if (input[i] == '+'){
+					else if (isdigit(input[i])){
+						hasFirstOp = true;
+						continue;
+					}
+					else if (input[i] == '+' || input[i] == '-'){
 						cout << "variable or number expected" << endl;
 						break;
+					}
+				}
+
+				// Validating first operator
+				if (hasFirstOp){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (input[i] == '^'){
+						cout << "integer expected" << endl;
 					}
 				}
 			}			
