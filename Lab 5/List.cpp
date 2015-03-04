@@ -149,6 +149,78 @@ public:
 		}
 		cout << "TAIL" << endl;
 	}
+
+	void inputList(string input){
+		bool startsWithReg = false;
+		bool containsEquals = false;
+		bool containsOp = false;
+		bool hasFirstOp = false;
+		bool hasSecondOp = false;
+
+		// Checks if first char is digit
+		if (isdigit(input[0])){
+			cout << "variable expected" << endl;
+			return;
+		}
+
+		// Checks if string starts with lower case char
+		if (isalpha(input[0]) && islower(input[0])){
+			startsWithReg = true;
+			
+			// Checks rest of string
+			for(int i = 1; i < input.size(); i++){
+				// Checks for out of place digit
+				if (!containsEquals){
+					if (isspace(input[i])) {
+						continue;
+					}
+					else if (isdigit(input[i])){
+						cout << "'=' expected" << endl;
+						break;
+					}
+				}
+
+				// Looking for an equal sign, skipping spaces
+				// Once an equal sign is found spaces won't be 
+				// validated the same way
+				if (startsWithReg && !containsEquals){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (input[i] == '='){
+						containsEquals = true;
+					}
+				}
+
+				// Checks for an out of place operator
+				if (containsEquals){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (isdigit(input[i])){
+						hasFirstOp = true;
+						continue;
+					}
+					else if (input[i] == '+' || input[i] == '-'){
+						cout << "variable or number expected" << endl;
+						break;
+					}
+				}
+
+				// Validating first operator
+				if (hasFirstOp){
+					if (isspace(input[i])){
+						continue;
+					}
+					else if (input[i] == '^'){
+						cout << "integer expected" << endl;
+					}
+				}
+			}			
+		}
+
+		
+	}
 };
 
 // Um, I didn't really know how else to intialize these

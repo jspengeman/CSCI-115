@@ -11,5 +11,6 @@ int main(){
 	string z = "a=2^b";
 	list->inputList(x);
 	list->inputList(y);
+	list->inputList(z);
 	return 0;
 }
