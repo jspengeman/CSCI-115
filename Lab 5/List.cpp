@@ -151,80 +151,146 @@ public:
 	}
 
 	void inputList(string input){
-		bool startsWithReg = false;
-		bool containsEquals = false;
-		bool containsOp = false;
-		bool hasFirstOp = false;
-		bool hasSecondOp = false;
-
-		// Checks if first char is digit
-		if (isdigit(input[0])){
-			cout << "variable expected" << endl;
-			return;
-		}
-
-		// Checks if string starts with lower case char
-		if (isalpha(input[0]) && islower(input[0])){
-			startsWithReg = true;
-			
-			// Checks rest of string
-			for(int i = 1; i < input.size(); i++){
-				// Checks for out of place digit
-				if (!containsEquals){
-					if (isspace(input[i])) {
-						continue;
-					}
-					else if (isdigit(input[i])){
-						cout << "'=' expected" << endl;
-						break;
-					}
-				}
-
-				// Looking for an equal sign, skipping spaces
-				// Once an equal sign is found spaces won't be 
-				// validated the same way
-				if (startsWithReg && !containsEquals){
-					if (isspace(input[i])){
-						continue;
-					}
-					else if (input[i] == '='){
-						containsEquals = true;
-					}
-				}
-
-				// Checks for an out of place operator
-				if (containsEquals){
-					if (isspace(input[i])){
-						continue;
-					}
-					else if (isdigit(input[i])){
-						hasFirstOp = true;
-						continue;
-					}
-					else if (input[i] == '+' || input[i] == '-'){
-						cout << "variable or number expected" << endl;
-						break;
-					}
-				}
-
-				// Validating first operator
-				if (hasFirstOp){
-					if (isspace(input[i])){
-						continue;
-					}
-					else if (input[i] == '^'){
-						cout << "integer expected" << endl;
-					}
-				}
-			}			
-		}
-
+		/*
+		 * I understand this function is overly verbose
+		 * I wrote it to try and model a finite state machine
+		 * That is why it is written in the manner it is.
+		 */
+		int length = input.length();
+		bool foundReg = false;
+		bool foundEqual = false;
+		bool foundFirstOperend = false;
+		bool foundOperator = false;
+		bool foundSecondOperend = false;
 		
+		// Indices for comparison
+		int regIndex;
+		int equalIndex;
+		int firstOperendIndex;
+		int operatorIndex;
+		int secondOperendIndex;
+
+		int lastIndex;
+
+		// State 1: Looking for register
+		for (int i = 0; i < length; i++){
+			if (isspace(input[i])){ continue; }
+
+			if (isalpha(input[i]) && islower(input[i])){ 
+				regIndex = i; 
+				foundReg = true;
+				lastIndex = i + 1;
+				break; 
+			}
+			else if (isdigit(input[i]) || isupper(input[i])){
+				cout << "variable expected" << endl;
+				return;
+			}
+		}	
+
+		// State 2: Looking for equal sign
+		for (int i = lastIndex; i < length; i++){
+
+			if (input[i] == '='){
+				equalIndex = i;
+				foundEqual = true;
+				lastIndex = i + 1;
+				break;
+			}
+			else if (isspace(input[i])){
+				continue;
+			}
+			else {
+				// Error has been found exit function
+				cout << "'=' expected" << endl;
+				return;
+			}
+		}
+
+		// State 3: Looking for first operend
+		for (int i = lastIndex; i < length; i++){
+			if (!foundFirstOperend){
+				if (isspace(input[i])){
+					continue;
+				}
+				else if (input[i] == '+' || input[i] == '-' ||
+					     input[i] == '*' || input[i] == '^'){
+					cout << "variable or number expected" << endl;
+					return;
+				}
+				else if (isalnum(input[i])){
+					firstOperendIndex = i;
+					foundFirstOperend = true;
+					lastIndex = i + 1;
+					break;
+				}
+			}
+		}
+		
+		//State 4: checking for operator location and valid first operator
+		bool readNum1 = true;
+		bool readSpace = false;
+		bool readNum2 = false;
+		for (int i = lastIndex; i < length; i++){
+			if (input[i] == '+' || input[i] == '-' ||
+				input[i] == '*' || input[i] == '^'){
+				operatorIndex = i;
+				foundOperator = true;
+				lastIndex = i + 1;
+				break;
+			}
+			else if (isspace(input[i])){
+				readSpace = true;
+				continue;
+			}
+			else if (isalnum(input[i]) && readSpace){
+				readNum2 = true;
+				cout << "operator expected" << endl;
+				return;
+			} 
+		}
+
+		// State 5: checking for operator 2
+		for (int i = lastIndex; i < length; i++){
+			if (isspace(input[i])){
+				continue;
+			}
+			else if (isalnum(input[i])){					
+				secondOperendIndex = i;
+				foundSecondOperend = true;
+				lastIndex = i + 1;
+				break;
+			}
+		}
+
+		readNum1 = true;
+		readSpace = false;
+		readNum2 = false;
+		// State 6: checking for valid second operend
+		for (int i = lastIndex; i < length; i++){
+			if (isspace(input[i])){
+				readSpace = true;
+				continue;
+			}
+			else if (isalnum(input[i]) && readSpace){
+				readNum2 = true;
+				cout << "end of line expected" << endl;
+				return;
+			} 
+		}
+
+		// Does not resemble a state I forgot this case
+		// not enough time to add it into my states.
+		int x = secondOperendIndex;
+		if (input[operatorIndex] == '^'){
+			if (isalpha(input[x])){
+				cout << "integer expected" << endl;
+				return;
+			}
+		}		
 	}
 };
 
-// Um, I didn't really know how else to intialize these
-// Although doing it this way makes me cringe.
 template <typename E>
 int Link<E>::active_nodes = 0;
 template <typename E>
