@@ -155,6 +155,10 @@ public:
 		 * I understand this function is overly verbose
 		 * I wrote it to try and model a finite state machine
 		 * That is why it is written in the manner it is.
+		 * I wrote it iteratively and then lost my mojo so some
+		 * parts access parts of strings that should be capable
+		 * of being accessed by a FSM so sadly its not a FSM but
+		 * I shall refactor it for fun later on!
 		 */
 		int length = input.length();
 		bool foundReg = false;
