@@ -353,10 +353,10 @@ public:
 		char equationOp = input[opIndex];
 		char eqReg = input[0];
 
-		completeEquation(eqReg, equationOp, operend1, operend2);
+		createEquation(eqReg, equationOp, operend1, operend2);
 	}
 
-	void completeEquation(char reg, char op, string oper1, string oper2){
+	void createEquation(char reg, char op, string oper1, string oper2){
 		LinkedList<int> *operend1 = new LinkedList<int>;
 		LinkedList<int> *operend2 = new LinkedList<int>;
 
@@ -371,6 +371,21 @@ public:
 			intChunks2.insert(intChunks2.begin(), stoi(oper2.substr(i, 4), nullptr, 10));					
 		}
 
+		for (int i = 0; i < intChunks1.size(); i++){
+			operend1->append(intChunks1[i]);
+		}
+
+		for (int i = 0; i < intChunks2.size(); i++){
+			operend2->append(intChunks2[i]);
+		}
+
+		completeEquation(operend1, operend2, reg, op);
+
+	}
+
+	void completeEquation(LinkedList<int> *operend1, LinkedList<int> *operend2, char reg, char op){
+		operend1->viewList();
+		operend2->viewList();
 	}
 };
 
