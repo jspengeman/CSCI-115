@@ -1,6 +1,8 @@
 #include <iostream>
 #include <locale>
 #include <string>
+#include <array>
+#include <vector> 
 #include "List.h"
 
 using namespace std;
@@ -131,6 +133,8 @@ public:
 		 * count head and tail or not so please don't
 		 * take off points :D
 		 */ 
+
+		 // Might need to subtract 26 because of the intialization of all of the registers
 		return current->get_active_nodes() - 2;
 	}
 
@@ -140,17 +144,52 @@ public:
 	}
 
 	void viewList(){
-		cout << "HEAD -> ";
 		current = head->next;
+		int count = 1;
 		
 		while(current != tail){
-			cout << current->element << " -> ";
+			count++;
+			cout << current->element;
 			current = current->next;
+
+			if (count % 4 == 0){
+				cout << " ";
+			}
 		}
-		cout << "TAIL" << endl;
+		cout << endl;
+	}
+};
+
+
+template <typename E>
+int Link<E>::active_nodes = 0;
+template <typename E>
+int Link<E>::free_nodes = 0;
+template <typename E>
+Link<E> *Link<E>::freelist = NULL;
+
+
+class Calculator {
+private:
+	// Array of 26 Linked List representing 26 registers
+	array<LinkedList<int>, 26> equations;
+
+public:
+	Calculator(){
+		for (int i = 0; i < 26; i++){
+			equations[i].append(0);
+		}
 	}
 
-	void inputList(string input){
+	void viewEquations(){
+		string xs = "abcdefghijkklmnopqrstuvwxyz";
+		for (int i = 0; i < 26; i++){
+			cout << xs[i] << ": ";
+			equations[i].viewList();
+		}
+	}
+
+	void validateEquation(string input){
 		/*
 		 * I understand this function is overly verbose
 		 * I wrote it to try and model a finite state machine
@@ -291,15 +330,50 @@ public:
 				cout << "integer expected" << endl;
 				return;
 			}
-		}		
+		}
+
+		processEquation(input);	
+	}
+
+	void processEquation(string input){
+		std::string::iterator end_pos = std::remove(input.begin(), input.end(), ' ');
+		input.erase(end_pos, input.end());
+
+		int opIndex;
+		int end = input.length();
+		for (int i = 0; i < end; i++){
+			if (input[i] == '+' || input[i] == '-' ||
+				input[i] == '*' || input[i] == '^'){
+				opIndex = i;
+			}
+		}
+
+		string operend1 = input.substr(2, opIndex - 2);
+		string operend2 = input.substr(opIndex + 1, end);
+		char equationOp = input[opIndex];
+		char eqReg = input[0];
+
+		completeEquation(eqReg, equationOp, operend1, operend2);
+	}
+
+	void completeEquation(char reg, char op, string oper1, string oper2){
+		LinkedList<int> *operend1 = new LinkedList<int>;
+		LinkedList<int> *operend2 = new LinkedList<int>;
+
+		vector<int> intChunks1;
+		vector<int> intChunks2;
+
+		for (int i = 0; i < oper1.length(); i+= 4){
+			intChunks1.insert(intChunks1.begin(), stoi(oper1.substr(i, 4), nullptr, 10));					
+		}
+
+		for (int i = 0; i < oper2.length(); i+= 4){
+			intChunks2.insert(intChunks2.begin(), stoi(oper2.substr(i, 4), nullptr, 10));					
+		}
+
 	}
 };
 
-template <typename E>
-int Link<E>::active_nodes = 0;
-template <typename E>
-int Link<E>::free_nodes = 0;
-template <typename E>
-Link<E> *Link<E>::freelist = NULL;
+
 
 
