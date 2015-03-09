@@ -88,6 +88,7 @@ public:
 		// Reset the empty list
 		current = head;
 		head->next = tail;
+		node_count = 0;
 	}
 
 	void prepend(const E& item){
@@ -96,6 +97,7 @@ public:
 		new_node->element = item;
 		new_node->next = head->next;
 		head->next = new_node;
+		node_count++;
 	}
 
 	void append(const E& item){
@@ -104,6 +106,7 @@ public:
 		tail->next = new_node;
 		tail->element = item;
 		tail = tail->next;
+		node_count++;
 	}
 
 	void moveToStart(){
@@ -135,12 +138,18 @@ public:
 		 */ 
 
 		 // Might need to subtract 26 because of the intialization of all of the registers
-		return current->get_active_nodes() - 2;
+		 // Subtracting 82 because I initialize all registers to 0 with is 3 * 26 nodes then
+		 // I have 2 other operend nodes that have a head an a tail so subtract 4 more
+		return current->get_active_nodes() - 82;
 	}
 
 	int numFree(){
 		// Return static value of free nodes
 		return current->get_free_nodes();
+	}
+
+	int nodeCount(){
+		return node_count;
 	}
 
 	void viewList(){
@@ -298,7 +307,7 @@ public:
 			if (isspace(input[i])){
 				continue;
 			}
-			else if (isalnum(input[i])){					
+			else if (isalnum(input[i])){				
 				secondOperendIndex = i;
 				foundSecondOperend = true;
 				lastIndex = i + 1;
@@ -332,10 +341,15 @@ public:
 			}
 		}
 
+		if (foundFirstOperend && !foundOperator){
+			simpleAssignment(input);
+		}
+
 		processEquation(input);	
 	}
 
 	void processEquation(string input){
+		// Clean up the string
 		std::string::iterator end_pos = std::remove(input.begin(), input.end(), ' ');
 		input.erase(end_pos, input.end());
 
@@ -357,6 +371,7 @@ public:
 	}
 
 	void createEquation(char reg, char op, string oper1, string oper2){
+		// Make the string into two linked list one for each operend
 		LinkedList<int> *operend1 = new LinkedList<int>;
 		LinkedList<int> *operend2 = new LinkedList<int>;
 
@@ -386,6 +401,15 @@ public:
 	void completeEquation(LinkedList<int> *operend1, LinkedList<int> *operend2, char reg, char op){
 		operend1->viewList();
 		operend2->viewList();
+
+		// Complete the operation here
+	}
+
+	void simpleAssignment(input){
+		std::string::iterator end_pos = std::remove(input.begin(), input.end(), ' ');
+		input.erase(end_pos, input.end());
+
+		// Do basic assignment here
 	}
 };
 

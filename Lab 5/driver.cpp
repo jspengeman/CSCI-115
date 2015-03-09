@@ -15,18 +15,20 @@ int main(){
 	string f = "a= 12 + 1 B";
 
 	// Valid strings
-	string g = "a = 1000200000 + 10001001";
+	string g = "a = 10002000 + 10001000";
+	string h = "b = 1000";
 
 	Calculator *calc = new Calculator;
 	calc->viewEquations();
-	calc->validateEquation(a);
-	calc->validateEquation(b);
-	calc->validateEquation(c);
-	calc->validateEquation(d);
-	calc->validateEquation(e);
-	calc->validateEquation(f);
+	// calc->validateEquation(a);
+	// calc->validateEquation(b);
+	// calc->validateEquation(c);
+	// calc->validateEquation(d);
+	// calc->validateEquation(e);
+	// calc->validateEquation(f);
 
-	calc->validateEquation(g);
+	// calc->validateEquation(g);
+	calc->validateEquation(h);
 
 	return 0;
 }
