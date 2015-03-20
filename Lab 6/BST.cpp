@@ -93,19 +93,22 @@ int BST::kthSmallest(Node *curr, int k){
 	if (curr == NULL) return 0;
 	
 	// Let j be equal to number of children plus 1
-	int j = (curr->LeftChild == NULL) ? 0 : curr->LeftChild->nodeCount;
+	while(curr !=NULL){
+		int j = (curr->LeftChild == NULL) ? 0 : curr->LeftChild->nodeCount;
 
-	// If j equals k-1 then it is the currents nodes value
-	if (j == k - 1){
-		return curr->data;
-	}
-	// If j is greater then k-1 then it must be in the left subtree
-	else if (j > k - 1){
-		return kthSmallest(curr->LeftChild, k);
-	}
-	// If j is less then k then it must be in the right subtree
-	// We no longer need to check j+1 nodes so skip those
-	else {
-		return kthSmallest(curr->RightChild, k - j - 1);
+		// If j equals k-1 then it is the currents nodes value
+		if (j == k - 1){
+			return curr->data;
+		}
+		// If j is greater then k-1 then it must be in the left subtree
+		else if (j > k - 1){
+			curr = curr->LeftChild;
+		}
+		// If j is less then k then it must be in the right subtree
+		// We no longer need to check j+1 nodes so skip those
+		else {
+			curr = curr->RightChild; 
+			k = k - j - 1;
+		}
 	}
 }
