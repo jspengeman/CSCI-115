@@ -75,29 +75,19 @@ bool BST::FindNode(int data){
 	return false;
 }
 
-int BST::getSizeOfLeft(Node *node){
-	return (node == NULL) ? 0 : node->nodeCount;
-}
-
-int BST::kthSmallest(int k){
-	Node *curr = root;
-	int sizeOfLeft = 0;
+int BST::kthSmallest(Node *curr, int k){
+	if (curr == NULL) return 0;
 	
-	
-	while (curr != NULL){
-		sizeOfLeft = getSizeOfLeft(curr->LeftChild);
+	// Let j be equal to number of children plus 1
+	int j = (curr->LeftChild == NULL) ? 0 : curr->LeftChild->nodeCount;
 
-		if (k == sizeOfLeft + 1){
-			return curr->data;
-		}
-		else if (k > sizeOfLeft){
-			curr = curr->RightChild;
-			k -= sizeOfLeft + 1;
-		}
-		else {
-			curr = curr->LeftChild;
-		}
+	if (j == k - 1){
+		return curr->data;
 	}
-
-	return -1;
+	else if (j > k - 1){
+		return kthSmallest(curr->LeftChild, k);
+	}
+	else {
+		return kthSmallest(curr->RightChild, k - j - 1);
+	}
 }

@@ -17,6 +17,12 @@ int main(){
 	cout << bst->FindNode(1) << endl;
 	cout << bst->FindNode(10) << endl;
 	bst->printTree(bst->getRoot());
-	cout << bst->kthSmallest(1) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 1) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 2) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 3) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 4) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 5) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 6) << endl;
+	cout << bst->kthSmallest(bst->getRoot(), 7) << endl;
 	return 0;
 }

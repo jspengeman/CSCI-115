@@ -4,7 +4,7 @@ using namespace std;
 class Node {
 public:
 	Node(int data){ 
-		this->nodeCount = 0;
+		this->nodeCount = 1;
 		this->data = data; 
 		this->LeftChild = NULL;
 		this->RightChild = NULL;
@@ -28,5 +28,5 @@ public:
 	void InsertNode(int data);
 	bool FindNode(int data);
 	int getSizeOfLeft(Node *node);
-	int kthSmallest(int k);
+	int kthSmallest(Node *node, int k);
 };
