@@ -27,8 +27,22 @@ void BST::InsertNode(int data){
 	}
 	// Iterative insertions, still log(n) time complexity
 	while (curr != NULL){
-		// If data is less then curr root go left
+		/*
+		 * nodeCount is my invariant. Every time a node passes curr
+		 * its node count should be incremented. Leafs nodeCount=1.
+		 * Base case: assume we have an empty tree T, and we insert
+		 * node N into T then N->codeCount == 1. 
+		 * N + 1 case: the number of elements in a tree are equal to
+		 * 1 + leftSubtree + rightSubtree. If a node is inserted into 
+		 * a tree it is either in the right or left subtree. 
+		 * countNodes(root) + n == countNodes(insert(value))
+		 * where n is equal to the number of nodes being inserted
+		 * if this is true for 0 and n then it will be true for n+1 
+		 * and so on.
+		 */
 		curr->nodeCount++;
+
+		// If data is less then curr root go left
 		if (data < curr->data){
 			// If NULL make child
 			if (curr->LeftChild == NULL){
@@ -81,12 +95,16 @@ int BST::kthSmallest(Node *curr, int k){
 	// Let j be equal to number of children plus 1
 	int j = (curr->LeftChild == NULL) ? 0 : curr->LeftChild->nodeCount;
 
+	// If j equals k-1 then it is the currents nodes value
 	if (j == k - 1){
 		return curr->data;
 	}
+	// If j is greater then k-1 then it must be in the left subtree
 	else if (j > k - 1){
 		return kthSmallest(curr->LeftChild, k);
 	}
+	// If j is less then k then it must be in the right subtree
+	// We no longer need to check j+1 nodes so skip those
 	else {
 		return kthSmallest(curr->RightChild, k - j - 1);
 	}
