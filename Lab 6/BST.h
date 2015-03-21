@@ -27,6 +27,7 @@ public:
 	void printTree(Node *root);
 	void InsertNode(int data);
 	bool FindNode(int data);
-	int getSizeOfLeft(Node *node);
 	int kthSmallest(Node *node, int k);
+	void keysBetween(int start, int end);
+	void keysBetweenPrime(Node *root, int start, int end, int *count);
 };

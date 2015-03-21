@@ -24,5 +24,7 @@ int main(){
 	cout << bst->kthSmallest(bst->getRoot(), 5) << endl;
 	cout << bst->kthSmallest(bst->getRoot(), 6) << endl;
 	cout << bst->kthSmallest(bst->getRoot(), 7) << endl;
+	bst->keysBetween(100, 300);
 	return 0;
 }
+	

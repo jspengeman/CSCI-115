@@ -111,4 +111,22 @@ int BST::kthSmallest(Node *curr, int k){
 			k = k - j - 1;
 		}
 	}
+	// Error or nothing was found for that kth value
+	return 0;
+}
+
+int BST::keysBetween(int start, int end){
+	int count = 0;
+	int *data = &count;
+	keysBetweenPrime(root, start, end, data);
+	cout << endl << "Nodes visited :" << count << endl;
+	return count;
+}
+
+void BST::keysBetweenPrime(Node *curr, int start, int end, int *count){
+	if(curr == NULL) return;
+	*count+=1;
+	keysBetweenPrime(curr->LeftChild, start, end, count);
+	if (curr->data >= start && curr->data <= end) cout << curr->data << " ";
+	keysBetweenPrime(curr->RightChild, start, end, count);
 }
