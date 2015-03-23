@@ -71,6 +71,7 @@ void BST::InsertNode(int data){
 
 bool BST::FindNode(int data){
 	Node *curr = root;
+	// Wrote this method to test the tree invariants
 
 	while (curr != NULL){
 		// Checks if current node is target
@@ -119,10 +120,11 @@ int BST::keysBetween(int start, int end){
 	int count = 0;
 	int *data = &count;
 	keysBetweenPrime(root, start, end, data);
-	cout << endl << "Nodes visited :" << count << endl;
+	cout << endl << "Nodes visited: " << count << endl;
 	return count;
 }
 
+// I couldn't think of a more elegant solution. 
 void BST::keysBetweenPrime(Node *curr, int start, int end, int *count){
 	if(curr == NULL) return;
 	*count+=1;

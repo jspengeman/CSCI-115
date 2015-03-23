@@ -28,6 +28,6 @@ public:
 	void InsertNode(int data);
 	bool FindNode(int data);
 	int kthSmallest(Node *node, int k);
-	void keysBetween(int start, int end);
+	int keysBetween(int start, int end);
 	void keysBetweenPrime(Node *root, int start, int end, int *count);
 };
