@@ -125,6 +125,8 @@ int BST::keysBetween(int start, int end){
 }
 
 // I couldn't think of a more elegant solution. 
+// Time complexity is unfortunately O(N)
+// Sadly it visits every node of the tree.
 void BST::keysBetweenPrime(Node *curr, int start, int end, int *count){
 	if(curr == NULL) return;
 	*count+=1;
