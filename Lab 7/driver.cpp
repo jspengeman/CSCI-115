@@ -3,8 +3,9 @@
 using namespace std;
 
 int main(){
-	int arry[10] = {50, 20, 75, 90, 100, 80, 110, 25};
-	heap<int> *TestHeap = new heap<int>(arry, 10, 10);
+	int arr[10] = {50, 20, 30, 10, 60, 70, 80, 90, 100};
+	heap<int> *TestHeap = new heap<int>(arr, 9, 10);
 	TestHeap->viewHeap();
+	TestHeap->insert(10);
 	return 0;
 }

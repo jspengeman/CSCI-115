@@ -1,6 +1,3 @@
-#include <iostream>
-using namespace std;
-
 template <typename E> class heap {
 private:
 	E* Heap; 
@@ -21,3 +18,8 @@ public:
 	void insert(const E& it);
 	void viewHeap();
 };
+
+// I know this is bad but with out it I would
+// have to declare the template class name
+// for each type I want to use in heap.cpp
+#include "heap.cpp"
