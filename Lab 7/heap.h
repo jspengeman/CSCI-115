@@ -1,4 +1,4 @@
-template <typename E> class heap {
+template <typename E, typename Comp> class heap {
 private:
 	E* Heap; 
 	int maxsize; 
@@ -17,6 +17,7 @@ public:
 	void buildHeap();
 	void insert(const E& it);
 	void viewHeap();
+	bool isHeap();
 };
 
 // I know this is bad but with out it I would
