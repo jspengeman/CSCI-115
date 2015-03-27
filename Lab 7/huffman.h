@@ -1,7 +1,7 @@
 // Leaf node for the Huffman coding tree
 template <typename E> class HuffNode {
 public:
-	virtual ˜HuffNode() {} 
+	virtual ~HuffNode() {} 
 	virtual int weight() = 0; 
 	virtual bool isLeaf() = 0; 
 };
@@ -49,7 +49,7 @@ public:
 	HuffTree(HuffTree<E>* l, HuffTree<E>* r){ 
 		Root = new IntlNode<E>(l->root(), r->root()); 
 	}
-	˜HuffTree() {}
+	~HuffTree() {}
 	HuffNode<E>* root() { return Root; } 
 	int weight() { return Root->weight(); } 
 };

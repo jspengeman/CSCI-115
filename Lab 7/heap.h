@@ -18,6 +18,7 @@ public:
 	void insert(const E& it);
 	void viewHeap();
 	bool isHeap();
+	E removefirst();
 };
 
 // I know this is bad but with out it I would

@@ -1,19 +1,19 @@
 #include <iostream>
 #include "heap.h"
+#include "huffman.h"
 using namespace std;
 
 int main(){
-	int arr[20] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	heap<int, Max> *TestHeap = new heap<int, Max>(arr, 10, 20);
+	int arr[20] = {50, 45, 40, 35, 30, 25, 20, 15, 10, 5};
+	heap<int, Min> *TestHeap = new heap<int, Min>(arr, 10, 20);
 	TestHeap->viewHeap();
-	TestHeap->isHeap();
-	TestHeap->insert(15);
-	TestHeap->insert(14);
-	TestHeap->insert(13);
-	TestHeap->insert(12);
-	TestHeap->insert(11);
-	cout << endl;
-	TestHeap->viewHeap();
-	TestHeap->isHeap();
+	// TestHeap->insert(1);
+	// TestHeap->insert(2);
+	// TestHeap->insert(3);
+	// TestHeap->insert(4);
+	// TestHeap->insert(5);
+	// cout << TestHeap->removefirst() << endl;
+	// cout << TestHeap->removefirst() << endl;
+	// cout << TestHeap->removefirst() << endl;
 	return 0;
 }

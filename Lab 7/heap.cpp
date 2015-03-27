@@ -60,7 +60,6 @@ void heap<E, Comp>::insert(const E& it) {
 	if (n > maxsize) return;
 	int curr = n++;
 	Heap[curr] = it;
-	cout << Heap[curr] << endl; 
 	swim(curr);
 }
 
@@ -97,6 +96,7 @@ void heap<E, Comp>::viewHeap(){
 	for (int i = 0; i < n; i++){
 		cout << Heap[i] << endl;
 	}
+	isHeap();
 }
 
 template <typename E, typename Comp>
@@ -113,4 +113,12 @@ bool heap<E, Comp>::isHeap(){
 	}
 	cout << "Is a heap" << endl;
 	return true;
+}
+
+template <typename E, typename Comp>
+E heap<E, Comp>::removefirst(){
+	E output = Heap[0];
+	swap(0, --n);
+	sink(0);
+	return output;
 }
