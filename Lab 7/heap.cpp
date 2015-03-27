@@ -1,22 +1,6 @@
 #include <iostream>
 using namespace std;
 
-class Max {
-public:
-    template <typename T>
-    static bool prior (T a, T b) {
-        return a > b;
-    }
-};
-
-class Min {
-public:
-    template <typename T>
-    static bool prior (T a, T b) {
-        return a < b;
-    }
-};
-
 template <typename E, typename Comp>
 heap<E, Comp>::heap(E* h, int num, int max){ 
 	Heap = h; 
@@ -101,14 +85,12 @@ void heap<E, Comp>::viewHeap(){
 
 template <typename E, typename Comp>
 bool heap<E, Comp>::isHeap(){
-	for(int i = 0; i < n; i++){
+	for (int i = 0; i <= (n/2)-1; i++){
 		int lc = leftchild(i); int rc = rightchild(i);
-		if (!isLeaf(i)){
-			cout << "Parent: " << Heap[i] << ", Left child: " << Heap[lc] << ", Right child: " << Heap[rc] << endl;
-			if (Comp::prior(Heap[lc], Heap[i]) || Comp::prior(Heap[rc], Heap[i])){
-				cout << "Not a heap" << endl;
-				return false;
-			}
+		cout << "(P, LC, RC) := (" << Heap[i] << ", " << Heap[lc] << ", " << Heap[rc] << ")" << endl;
+		if (Comp::prior(Heap[lc], Heap[i]) || Comp::prior(Heap[rc], Heap[i])){
+			cout << "Not a heap" << endl;
+			return false;
 		}
 	}
 	cout << "Is a heap" << endl;

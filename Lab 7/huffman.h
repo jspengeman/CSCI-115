@@ -43,6 +43,9 @@ class HuffTree {
 private:
 	HuffNode<E>* Root; 
 public:
+	HuffTree(){
+		Root = NULL;
+	}
 	HuffTree(E& val, int freq){ 
 		Root = new LeafNode<E>(val, freq); 
 	}
@@ -51,5 +54,5 @@ public:
 	}
 	~HuffTree() {}
 	HuffNode<E>* root() { return Root; } 
-	int weight() { return Root->weight(); } 
+	int weight() { return Root->weight(); }
 };
