@@ -16,7 +16,8 @@ int main(){
 	
 	HuffTree<char>* test[8];
     test[0] = new HuffTree<char> ('z', 2);
-    test[1] = new HuffTree<char> ('k', 7);
+    cout << test[1] << endl;
+    test[1] = new HuffTree<char> ('k', 30);
     test[2] = new HuffTree<char> ('m', 24);
     test[3] = new HuffTree<char> ('c', 32);
     test[4] = new HuffTree<char> ('u', 37);
