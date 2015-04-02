@@ -3,7 +3,7 @@
 #include <locale> 
 #include <map>
 #include <array>
-#include <algorithm>
+#include <vector>
 #include "heap.h"
 #include "huffman.h"
 using namespace std;
@@ -24,34 +24,23 @@ HuffTree<E>* buildHuff(HuffTree<E>** TreeArray, int count) {
 }
 
 void insertFreqs(){
-	array<HuffTree<char>, 100> TreeArray;
+	HuffTree<char> *TreeArray [100];
 
-	map<char,int> frequencies;
-	string temp;
-	string aux;
+	map<char, int> frequencies;
 	char treeChar;
+	string wgt;
 	int weight;
 	char ctrl = 'y';
-	int count = 0;
 
 	while(ctrl == 'y'){
-		temp = "";
-		cout << "Enter frequencies in the format: char int " << endl;
-		getline(cin, temp);
-		
-		for(int i = 0; i < temp.size(); i++){
-			if (isalnum(temp[i])){
-				aux.push_back(temp[i]);
-			}
-		}
+		cout << "Enter a char: " << endl;
+		cin >> treeChar;
 
-		temp = aux;
-		string num;
-		treeChar = temp[0];
-		num = temp.substr(1);
-		int numFreq = stoi(num, nullptr, 10);
+		cout << "Enter a frequency: " << endl;
+		cin >> wgt;
+		int numFreq = stoi(wgt, nullptr, 10);
 
-		frequencies.insert(pair<char,int>(treeChar, numFreq));
+		frequencies.insert(pair<char, int>(treeChar, numFreq));
 
 		while(true){
 			cout << "Enter another (y/n): ";
@@ -65,6 +54,16 @@ void insertFreqs(){
 			}
 		} 
 	}
+
+	int count = 0;
+	map<char, int>::iterator it;
+	for (it = frequencies.begin(); it != frequencies.end(); it++){
+    	cout << it->first << ' ' << it->second << endl;
+    	HuffTree<char> *newTree = new HuffTree<char>(it->first, it->second);
+    	TreeArray[count] = newTree;
+    	count++;	
+	}
+	buildHuff(TreeArray, 100);
 }
 
 
