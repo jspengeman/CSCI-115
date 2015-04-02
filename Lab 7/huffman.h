@@ -7,8 +7,8 @@ public:
     virtual ~HuffNode () {};
     virtual int weight () const = 0;
     virtual bool isLeaf () = 0;
-    bool operator< (const HuffNode& rhs) const;
-    bool operator> (const HuffNode& rhs) const;
+    bool operator< (const HuffNode& opperend) const;
+    bool operator> (const HuffNode& opperend) const;
 };
 
 template <typename T>
@@ -24,6 +24,7 @@ public:
     int weight () const;
     T val () const;
     bool isLeaf ();
+
 };
 
 template <typename T>
@@ -55,8 +56,9 @@ public:
     ~HuffTree () {};
     HuffNode<T>* root ();
     int weight ();
-    bool operator> (HuffTree& rhs);
-    bool operator< (HuffTree& rhs);
+    bool operator> (HuffTree& opperend);
+    bool operator< (HuffTree& opperend);
+    friend ostream& operator<<(ostream& os, const HuffTree<T>& tree);
 };
 
 HuffTree<char>* buildHuff (HuffTree<char>** TreeArray, int count);
