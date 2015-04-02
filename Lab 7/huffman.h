@@ -1,55 +1,63 @@
-// Leaf node for the Huffman coding tree
-template <typename E> class HuffNode {
+#include "heap.h"
+#include <iostream>
+
+template <typename T>
+class HuffNode {
 public:
-	virtual ~HuffNode() {} 
-	virtual int weight() = 0; 
-	virtual bool isLeaf() = 0; 
+    virtual ~HuffNode () {};
+    virtual int weight () const = 0;
+    virtual bool isLeaf () = 0;
+    bool operator< (const HuffNode& rhs) const;
+    bool operator> (const HuffNode& rhs) const;
 };
 
-template <typename E>
-class LeafNode : public HuffNode<E> {
+template <typename T>
+class LeafNode : public HuffNode<T> {
 private:
-	E it; 
-	int wgt; 
+    T it;
+    int wgt;
+
 public:
-	LeafNode(const E& val, int freq) { it = val; wgt = freq; }
-	int weight() { return wgt; }
-	E val() { return it; }
-	bool isLeaf() { return true; }
+    LeafNode (const T& val, int freq);
+    ~LeafNode () {}
+
+    int weight () const;
+    T val () const;
+    bool isLeaf ();
 };
 
-// Internal node for the Huffman coding tree
-template <typename E> 
-class IntlNode : public HuffNode<E> {
+template <typename T>
+class IntlNode : public HuffNode<T> {
 private:
-	HuffNode<E>* lc; 
-	HuffNode<E>* rc; 
-	int wgt;
+    HuffNode<T>* lc;
+    HuffNode<T>* rc;
+    int wgt;
+
 public:
-	IntlNode(HuffNode<E>* l, HuffNode<E>* r){ 
-		wgt = l->weight() + r->weight(); lc = l; rc = r; 
-	}
-	int weight() { return wgt; }
-	bool isLeaf() { return false; }
-	HuffNode<E>* left() const { return lc; }
-	HuffNode<E>* right() const { return rc; }
-	void setLeft(HuffNode<E>* b){ lc = (HuffNode<E>*)b; }
-	void setRight(HuffNode<E>* b){ rc = (HuffNode<E>*)b; }
+    IntlNode (HuffNode<T>* l, HuffNode<T>* r);
+    ~IntlNode () {};
+
+    int weight () const;
+    bool isLeaf ();
+    HuffNode<T>* left () const;
+    void setLeft (HuffNode<T>* b);
+    HuffNode<T>* right () const;
+    void setRight (HuffNode<T>* b);
 };
 
-// Class representing the Huffman tree
-template <typename E>
+template <typename T>
 class HuffTree {
 private:
-	HuffNode<E>* Root; 
+    HuffNode<T>* Root;
 public:
-	HuffTree(E val, int freq){ 
-		Root = new LeafNode<E>(val, freq); 
-	}
-	HuffTree(HuffTree<E>* l, HuffTree<E>* r){ 
-		Root = new IntlNode<E>(l->root(), r->root()); 
-	}
-	~HuffTree() {}
-	HuffNode<E>* root() { return Root; } 
-	int weight() { return Root->weight(); }
+    HuffTree (const T& val, int freq);
+    HuffTree (HuffTree<T>* l, HuffTree<T>* r);
+    ~HuffTree () {};
+    HuffNode<T>* root ();
+    int weight ();
+    bool operator> (HuffTree& rhs);
+    bool operator< (HuffTree& rhs);
 };
+
+HuffTree<char>* buildHuff (HuffTree<char>** TreeArray, int count);
+#include "huffman.cpp"
