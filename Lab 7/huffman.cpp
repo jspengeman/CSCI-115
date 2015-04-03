@@ -128,12 +128,14 @@ bool HuffTree<T>::operator< (HuffTree& opperend) {
     return this->root()->weight() < opperend.root()->weight();
 }
 
+
 template <typename T>
 ostream& operator<< (ostream& os, const HuffTree<T>& tree)
-{
+{	
     os << "Tree weight: " << tree.weight();
     return os;
 }
+
 
 
 // Build huff function pops the two lowest freq of of the list
@@ -142,7 +144,6 @@ ostream& operator<< (ostream& os, const HuffTree<T>& tree)
 HuffTree<char>* buildHuff(HuffTree<char>** TreeArray, int count) {
     heap<HuffTree<char>*, Min>* forest = new heap<HuffTree<char>*, Min> (TreeArray, count, count);
     HuffTree<char> *temp1, *temp2, *temp3 = 0;
-    //forest->viewHeap();
     while (forest->size() > 1) {
         temp1 = forest->removefirst();
         temp2 = forest->removefirst();
