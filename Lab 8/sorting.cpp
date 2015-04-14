@@ -11,9 +11,7 @@ void swap(int *arr, int x, int y){
 	arr[y] = temp; 
 }
 
-void insertion(int *arr, int size) {
-	int swapCount = 0;
-	int compCount = 0;
+void insertion(int *arr, int size, int &swapCount, int &compCount) {
 	for (int i = 1; i < size; i++){
 		for (int j = i; j > 0; j--){
 			if (arr[j] < arr[j-1]){
@@ -23,9 +21,6 @@ void insertion(int *arr, int size) {
 			compCount++;
 		}
 	}
-
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
 }
 
 void bubble(int *arr, int size) {
@@ -113,10 +108,7 @@ void shuffle(int *arr, int size){
 	for (int i = size - 1; i >= 1; i--){
 		// Finding a random number that is 
 		// within the boundry of 0 <= j <= i
-		int j = rand() % 100;
-		while (j < 0 || j > i){
-			j = rand() % 100;
-		}
+		int j = rand() % i;
 		swap(arr, i, j);
 	}	
 }
@@ -144,17 +136,25 @@ int* intialize(int i){
 }
 
 int main(){
+	// Output for the swap and compares
+	int output[5][16];
+
 	// Intializing random number generator
 	srand(time(NULL));
 	int* array = intialize(1);
 	int temp[10];
 	
-	
+	int swapCount = 0;
+	int compCount = 0;
+
 	cout << "Insertion" << endl;
 	shuffle(array, 10);
 	viewArray(array, 10);
-	insertion(array, 10);
+	insertion(array, 10, swapCount, compCount);
 	viewArray(array, 10);
+
+	cout << "swaps: " << swapCount << endl;
+	cout << "comps: " << compCount << endl;
 
 
 	cout << "Bubble" << endl;
