@@ -141,12 +141,13 @@ void getInsertionData(unsigned int output[5][16]){
 
 	dataCount = 0;
 	// TODO: change this back to i <= 6
-	for(int i = 1; i <= 5; i++){
+	for(int i = 1; i <= 6; i++){
 		swapCount = 0; compCount = 0;
 		size = pow(10, i);
 		array = intialize(i);
 		shuffle(array, size);
 		insertion(array, size, swapCount, compCount);
+		delete array;
 
 		// Put the data in output array 
 		// pairs of (k, k + 1) represent 
@@ -156,7 +157,31 @@ void getInsertionData(unsigned int output[5][16]){
 		dataCount += 2;
 	}
 
-	// TODO: Do the 10k up and 10k down here
+	swapCount = 0; compCount = 0;
+	int i = 0;
+	int j = 9999;
+	array = new int[10000];
+	while(i <= 0){
+		array[i] = i + 1;
+		i++;
+	}
+
+	// 10k up case
+	insertion(array, size, swapCount, compCount);
+	output[0][dataCount++] = swapCount;
+	output[0][dataCount++] = compCount;
+
+	while(j >= 9999){
+		array[j] = j + 1;
+		j--;
+	}
+
+	// 10k down case
+	insertion(array, size, swapCount, compCount);
+	output[0][dataCount++] = swapCount;
+	output[0][dataCount++] = compCount;
+
+	delete array;
 }
 
 void displayData(unsigned int output[5][16]){
@@ -199,7 +224,7 @@ void displayData(unsigned int output[5][16]){
 	// TODO: change this to i < 5
 	for (int i = 0; i < 1; i++){
 		cout << left << setw(nameWidth) << setfill(separator) << algs[i];
-		for (int j = 0; j < 12; j+= 2){
+		for (int j = 0; j < 16; j+= 2){
 
 			str_s << output[i][j];
 			str_s << ",";
