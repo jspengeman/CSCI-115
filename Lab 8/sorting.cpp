@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h> 
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -11,7 +14,8 @@ void swap(int *arr, int x, int y){
 	arr[y] = temp; 
 }
 
-void insertion(int *arr, int size, int &swapCount, int &compCount) {
+// Had to use unsigned ints here to keep count for the swaps and comps
+void insertion(int *arr, int size, unsigned int &swapCount, unsigned int &compCount) {
 	for (int i = 1; i < size; i++){
 		for (int j = i; j > 0; j--){
 			if (arr[j] < arr[j-1]){
@@ -48,11 +52,12 @@ void selection(int *arr, int size, int &swapCount, int &compCount) {
 	}
 }
 
-void mergesort(int arr[], int temp[], int left, int right) {
+void mergesort(int arr[], int temp[], int left, int right, int &compCount) {
+	// Merge sort is unique in the fact that it does no swapping, pretty neat.
 	if (left == right) return; 
 	int mid = (left+right)/2;
-	mergesort(arr, temp, left, mid);
-	mergesort(arr, temp, mid+1, right);
+	mergesort(arr, temp, left, mid, compCount);
+	mergesort(arr, temp, mid+1, right, compCount);
 	
 	// Copy subarray to temp
 	for(int i=left; i<=right; i++) 
@@ -69,6 +74,7 @@ void mergesort(int arr[], int temp[], int left, int right) {
 			arr[curr] = temp[i1++];
 		else 
 			arr[curr] = temp[i2++];
+		compCount++; // One array comparison taking place for each call
 	}
 }
 
@@ -76,12 +82,13 @@ inline int findpivot(int arr[], int i, int j) { return (i+j)/2; }
 
 inline int partition(int arr[], int l, int r, int& pivot, int &swapCount, int &compCount) {
 	do { // Move the bounds inward until they meet
-		while (arr[++l] < pivot) compCount++; // Move l right and
-		while ((l < r) && (pivot < arr[--r])) compCount++; // r left
-		swap(arr, l, r); // Swap out-of-place values
+		// Move l right and left with these loops
+		while (arr[++l] < pivot) compCount++; 
+		while ((l < r) && (pivot < arr[--r])) compCount++; 
+		swap(arr, l, r); // Swap out of place values
 		swapCount++;
-	} while (l < r); // Stop when they cross
-		return l; // Return first position in right partition
+	} while (l < r); 
+		return l; 
 }
 
 void quicksort(int arr[], int i, int j, int &swapCount, int &compCount) {
@@ -126,64 +133,146 @@ void viewArray(int *arr, int size){
 	cout << endl;
 }
 
+void getInsertionData(unsigned int output[5][16]){
+	// Index zero represents insertion sort data
+	int *array;
+	int size, dataCount;
+	unsigned int swapCount, compCount;
+
+	dataCount = 0;
+	for(int i = 1; i <= 5; i++){
+		swapCount = 0; compCount = 0;
+		size = pow(10, i);
+		array = intialize(i);
+		shuffle(array, size);
+		insertion(array, size, swapCount, compCount);
+
+		// Put the data in output array 
+		// pairs of (k, k + 1) represent 
+		// the swap, comp count tuples
+		output[0][dataCount] = swapCount;
+		output[0][dataCount + 1] = compCount;
+		dataCount += 2;
+	}
+}
+
+void displayData(unsigned int output[5][16]){
+	const char separator = ' ';
+   	int nameWidth = 10;
+    int numWidth = 15;
+
+    cout << left << setw(nameWidth) << setfill(separator) << "Algorithm";
+    cout << left << setw(nameWidth) << setfill(separator) << "10";
+    cout << left << setw(numWidth) << setfill(separator) << "100";
+    cout << left << setw(numWidth) << setfill(separator) << "1,000";
+    cout << left << setw(numWidth) << setfill(separator) << "10,000";
+    cout << left << setw(numWidth) << setfill(separator) << "100,000";
+    cout << left << setw(numWidth) << setfill(separator) << "1,000,000";
+    cout << left << setw(numWidth) << setfill(separator) << "10K Up";
+    cout << left << setw(numWidth) << setfill(separator) << "10K Down";
+    cout << endl;
+
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << endl;
+
+    nameWidth = 40;
+    numWidth = 50;
+
+	string algs[5] = {
+		"Insertion", "Bubble", "Selection",
+		"Merge", "Quick"
+	};
+
+	stringstream str_s;
+	string outStr;
+	for (int i = 0; i < 5; i++){
+		cout << left << setw(nameWidth) << setfill(separator) << algs[i];
+		for (int j = 0; j < 12; j+= 2){
+
+			str_s << output[i][j];
+			str_s << ",";
+			str_s << output[i][j + 1];
+			outStr = str_s.str();
+
+			cout << left << setw(nameWidth) << setfill(separator) << outStr;
+		}
+		cout << endl;
+	}
+}
+
 int main(){
 	// Output for the swap and compares
-	int output[5][16];
+	unsigned int output[5][16];
 
 	// Intializing random number generator
 	srand(time(NULL));
-	int* array = intialize(1);
-	int temp[10];
+	getInsertionData(output);
+	displayData(output);
+
+	// int* array = intialize(1);
+	// int temp[10];
 	
-	int swapCount = 0;
-	int compCount = 0;
+	// int swapCount = 0;
+	// int compCount = 0;
 
-	cout << "Insertion" << endl;
-	shuffle(array, 10);
-	viewArray(array, 10);
-	insertion(array, 10, swapCount, compCount);
-	viewArray(array, 10);
+	// cout << "Insertion" << endl;
+	// shuffle(array, 10);
+	// viewArray(array, 10);
+	// insertion(array, 10, swapCount, compCount);
+	// viewArray(array, 10);
 
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
-	swapCount = 0; compCount = 0;
+	// cout << "swaps: " << swapCount << endl;
+	// cout << "comps: " << compCount << endl;
+	// swapCount = 0; compCount = 0;
 
 
-	cout << "Bubble" << endl;
-	shuffle(array, 10);
-	viewArray(array, 10);
-	bubble(array, 10, swapCount, compCount);
-	viewArray(array, 10);
+	// cout << "Bubble" << endl;
+	// shuffle(array, 10);
+	// viewArray(array, 10);
+	// bubble(array, 10, swapCount, compCount);
+	// viewArray(array, 10);
 
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
-	swapCount = 0; compCount = 0;
+	// cout << "swaps: " << swapCount << endl;
+	// cout << "comps: " << compCount << endl;
+	// swapCount = 0; compCount = 0;
 
-	cout << "Selection" << endl;
-	shuffle(array, 10);
-	viewArray(array, 10);
-	selection(array, 10, swapCount, compCount);
-	viewArray(array, 10);
+	// cout << "Selection" << endl;
+	// shuffle(array, 10);
+	// viewArray(array, 10);
+	// selection(array, 10, swapCount, compCount);
+	// viewArray(array, 10);
 
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
-	swapCount = 0; compCount = 0;
+	// cout << "swaps: " << swapCount << endl;
+	// cout << "comps: " << compCount << endl;
+	// swapCount = 0; compCount = 0;
 
-	cout << "Merge sort" << endl;
-	shuffle(array, 10);
-	viewArray(array, 10);
-	mergesort(array, temp, 0, 9);
-	viewArray(array, 10);
+	// cout << "Merge sort" << endl;
+	// shuffle(array, 10);
+	// viewArray(array, 10);
+	// mergesort(array, temp, 0, 9, compCount);
+	// viewArray(array, 10);
 
-	cout << "Quick sort" << endl;
-	shuffle(array, 10);
-	viewArray(array, 10);
-	quicksort(array, 0, 9, swapCount, compCount);
-	viewArray(array, 10);
+	// cout << "swaps: " << swapCount << endl;
+	// cout << "comps: " << compCount << endl;
+	// swapCount = 0; compCount = 0;
 
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
-	swapCount = 0; compCount = 0;
+	// cout << "Quick sort" << endl;
+	// shuffle(array, 10);
+	// viewArray(array, 10);
+	// quicksort(array, 0, 9, swapCount, compCount);
+	// viewArray(array, 10);
+
+	// cout << "swaps: " << swapCount << endl;
+	// cout << "comps: " << compCount << endl;
+	// swapCount = 0; compCount = 0;
 
 	return 0;
 }
