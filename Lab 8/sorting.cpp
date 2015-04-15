@@ -74,24 +74,25 @@ void mergesort(int arr[], int temp[], int left, int right) {
 
 inline int findpivot(int arr[], int i, int j) { return (i+j)/2; }
 
-inline int partition(int arr[], int l, int r, int& pivot) {
+inline int partition(int arr[], int l, int r, int& pivot, int &swapCount, int &compCount) {
 	do { // Move the bounds inward until they meet
-		while (arr[++l] < pivot); // Move l right and
-		while ((l < r) && (pivot < arr[--r])); // r left
+		while (arr[++l] < pivot) compCount++; // Move l right and
+		while ((l < r) && (pivot < arr[--r])) compCount++; // r left
 		swap(arr, l, r); // Swap out-of-place values
+		swapCount++;
 	} while (l < r); // Stop when they cross
 		return l; // Return first position in right partition
 }
 
-void quicksort(int arr[], int i, int j) { // Quicksort
-	if (j <= i) return; // Don’t sort 0 or 1 element
+void quicksort(int arr[], int i, int j, int &swapCount, int &compCount) {
+	if (j <= i) return;
 	int pivotindex = findpivot(arr, i, j);
-	swap(arr, pivotindex, j); // Put pivot at end
-	// k will be the first position in the right subarray
-	int k = partition(arr, i-1, j, arr[j]);
-	swap(arr, k, j); // Put pivot in place
-	quicksort(arr, i, k-1);
-	quicksort(arr, k+1, j);
+	swap(arr, pivotindex, j); 
+	int k = partition(arr, i-1, j, arr[j], swapCount, compCount);
+	swap(arr, k, j); 
+	swapCount += 2; // Increment by two for the two different swaps taking place
+	quicksort(arr, i, k-1, swapCount, compCount);
+	quicksort(arr, k+1, j, swapCount, compCount);
 }
 
 void shuffle(int *arr, int size){
@@ -177,8 +178,12 @@ int main(){
 	cout << "Quick sort" << endl;
 	shuffle(array, 10);
 	viewArray(array, 10);
-	quicksort(array, 0, 9);
+	quicksort(array, 0, 9, swapCount, compCount);
 	viewArray(array, 10);
+
+	cout << "swaps: " << swapCount << endl;
+	cout << "comps: " << compCount << endl;
+	swapCount = 0; compCount = 0;
 
 	return 0;
 }
