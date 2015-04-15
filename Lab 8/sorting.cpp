@@ -140,6 +140,7 @@ void getInsertionData(unsigned int output[5][16]){
 	unsigned int swapCount, compCount;
 
 	dataCount = 0;
+	// TODO: change this back to i <= 6
 	for(int i = 1; i <= 5; i++){
 		swapCount = 0; compCount = 0;
 		size = pow(10, i);
@@ -154,6 +155,8 @@ void getInsertionData(unsigned int output[5][16]){
 		output[0][dataCount + 1] = compCount;
 		dataCount += 2;
 	}
+
+	// TODO: Do the 10k up and 10k down here
 }
 
 void displayData(unsigned int output[5][16]){
@@ -172,15 +175,15 @@ void displayData(unsigned int output[5][16]){
     cout << left << setw(numWidth) << setfill(separator) << "10K Down";
     cout << endl;
 
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
-    cout << left << setw(numWidth) << setfill(separator) << "---------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
+    cout << left << setw(numWidth) << setfill(separator) << "----------";
     cout << endl;
 
     nameWidth = 40;
@@ -193,7 +196,8 @@ void displayData(unsigned int output[5][16]){
 
 	stringstream str_s;
 	string outStr;
-	for (int i = 0; i < 5; i++){
+	// TODO: change this to i < 5
+	for (int i = 0; i < 1; i++){
 		cout << left << setw(nameWidth) << setfill(separator) << algs[i];
 		for (int j = 0; j < 12; j+= 2){
 
@@ -216,63 +220,6 @@ int main(){
 	srand(time(NULL));
 	getInsertionData(output);
 	displayData(output);
-
-	// int* array = intialize(1);
-	// int temp[10];
-	
-	// int swapCount = 0;
-	// int compCount = 0;
-
-	// cout << "Insertion" << endl;
-	// shuffle(array, 10);
-	// viewArray(array, 10);
-	// insertion(array, 10, swapCount, compCount);
-	// viewArray(array, 10);
-
-	// cout << "swaps: " << swapCount << endl;
-	// cout << "comps: " << compCount << endl;
-	// swapCount = 0; compCount = 0;
-
-
-	// cout << "Bubble" << endl;
-	// shuffle(array, 10);
-	// viewArray(array, 10);
-	// bubble(array, 10, swapCount, compCount);
-	// viewArray(array, 10);
-
-	// cout << "swaps: " << swapCount << endl;
-	// cout << "comps: " << compCount << endl;
-	// swapCount = 0; compCount = 0;
-
-	// cout << "Selection" << endl;
-	// shuffle(array, 10);
-	// viewArray(array, 10);
-	// selection(array, 10, swapCount, compCount);
-	// viewArray(array, 10);
-
-	// cout << "swaps: " << swapCount << endl;
-	// cout << "comps: " << compCount << endl;
-	// swapCount = 0; compCount = 0;
-
-	// cout << "Merge sort" << endl;
-	// shuffle(array, 10);
-	// viewArray(array, 10);
-	// mergesort(array, temp, 0, 9, compCount);
-	// viewArray(array, 10);
-
-	// cout << "swaps: " << swapCount << endl;
-	// cout << "comps: " << compCount << endl;
-	// swapCount = 0; compCount = 0;
-
-	// cout << "Quick sort" << endl;
-	// shuffle(array, 10);
-	// viewArray(array, 10);
-	// quicksort(array, 0, 9, swapCount, compCount);
-	// viewArray(array, 10);
-
-	// cout << "swaps: " << swapCount << endl;
-	// cout << "comps: " << compCount << endl;
-	// swapCount = 0; compCount = 0;
 
 	return 0;
 }
