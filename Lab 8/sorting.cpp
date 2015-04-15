@@ -27,7 +27,7 @@ void insertion(int *arr, int size, unsigned int &swapCount, unsigned int &compCo
 	}
 }
 
-void bubble(int *arr, int size, int &swapCount, int &compCount) {
+void bubble(int *arr, int size, unsigned int &swapCount, unsigned int &compCount) {
 	for (int i = 0; i < size - 1; i++){
 		for (int j = size-1; j > i; j--){
 			if (arr[j] < arr[j-1]){
@@ -39,7 +39,7 @@ void bubble(int *arr, int size, int &swapCount, int &compCount) {
 	}
 }
 
-void selection(int *arr, int size, int &swapCount, int &compCount) { 
+void selection(int *arr, int size, unsigned int &swapCount, unsigned int &compCount) { 
 	for (int i = 0; i < size-1; i++) { 
 		int lowindex = i; 
 		for (int j = size-1; j > i; j--){ 
@@ -52,7 +52,7 @@ void selection(int *arr, int size, int &swapCount, int &compCount) {
 	}
 }
 
-void mergesort(int arr[], int temp[], int left, int right, int &compCount) {
+void mergesort(int arr[], int temp[], unsigned int left, int right, unsigned int &compCount) {
 	// Merge sort is unique in the fact that it does no swapping, pretty neat.
 	if (left == right) return; 
 	int mid = (left+right)/2;
@@ -80,7 +80,7 @@ void mergesort(int arr[], int temp[], int left, int right, int &compCount) {
 
 inline int findpivot(int arr[], int i, int j) { return (i+j)/2; }
 
-inline int partition(int arr[], int l, int r, int& pivot, int &swapCount, int &compCount) {
+inline int partition(int arr[], int l, int r, int& pivot,  unsigned int &swapCount, unsigned int &compCount) {
 	do { // Move the bounds inward until they meet
 		// Move l right and left with these loops
 		while (arr[++l] < pivot) compCount++; 
@@ -91,7 +91,7 @@ inline int partition(int arr[], int l, int r, int& pivot, int &swapCount, int &c
 		return l; 
 }
 
-void quicksort(int arr[], int i, int j, int &swapCount, int &compCount) {
+void quicksort(int arr[], int i, int j,  unsigned int &swapCount, unsigned int &compCount) {
 	if (j <= i) return;
 	int pivotindex = findpivot(arr, i, j);
 	swap(arr, pivotindex, j); 
@@ -126,6 +126,27 @@ int* intialize(int i){
 	return arr;
 }
 
+int* upDownIntialize(bool isUp){
+	int* arr = new int[10000];
+	int x = 0;
+	int y = 9999;
+
+	if(isUp) {
+		while(x <= 0){
+			arr[x] = x + 1;
+			x++;
+		}
+	}
+	else {
+		while(y >= 9999){
+			arr[y] = y + 1;
+			y--;
+		}
+	}
+
+	return arr;
+}
+
 void viewArray(int *arr, int size){
 	for (int i = 0; i < size; i++){
 		cout << arr[i] << " ";
@@ -133,55 +154,73 @@ void viewArray(int *arr, int size){
 	cout << endl;
 }
 
-void getInsertionData(unsigned int output[5][16]){
+void getAlgorithmData(unsigned int output[5][16]){
 	// Index zero represents insertion sort data
 	int *array;
 	int size, dataCount;
 	unsigned int swapCount, compCount;
 
-	dataCount = 0;
+	
 	// TODO: change this back to i <= 6
-	for(int i = 1; i <= 6; i++){
-		swapCount = 0; compCount = 0;
-		size = pow(10, i);
-		array = intialize(i);
-		shuffle(array, size);
-		insertion(array, size, swapCount, compCount);
+	for(int j = 0; j < 6; j++){	
+		dataCount = 0;
+		for(int i = 1; i <= 6; i++){
+			swapCount = 0; compCount = 0;
+			size = pow(10, i);
+			array = intialize(i);
+			shuffle(array, size);
+
+			// Call the desired algorithm here
+			// 10k up and down rows will be populated later
+			switch(j){
+				// case 0: insertion(array, size, swapCount, compCount); break;
+				// case 1: bubble(array, size, swapCount, compCount); break;
+				// case 2: selection(array, size, swapCount, compCount); break;
+				case 3: mergesort(array, 0, size - 1, swapCount, compCount); break;
+				case 4: quicksort(array, 0, size - 1, swapCount, compCount); break;
+				default: cout << "Error 1" << endl; break;
+			}
+
+			delete array;
+			// Put the data in output array 
+			// pairs of (k, k + 1) represent 
+			// the swap, comp count tuples
+			output[j][dataCount] = swapCount;
+			output[j][dataCount + 1] = compCount;
+			dataCount += 2;
+		}
+	}
+
+	// Populates the output with the 10k up and down data
+	bool up = true;
+	dataCount = 12;	
+	size = 10000;
+	swapCount = 0; compCount = 0; 
+	for(int i = 0; i <= 4; i++){
+		array = upDownIntialize(up);
+
+		switch(i){
+			case 0: insertion(array, size, swapCount, compCount); break;
+			case 1: bubble(array, size, swapCount, compCount); break;
+			case 2: selection(array, size, swapCount, compCount); break;
+			case 3: mergesort(array, 0, size - 1, swapCount, compCount); break;
+			case 4: quicksort(array, 0, size - 1, swapCount, compCount); break;
+			default: cout << "Error 2" << endl; break;
+		}
+
 		delete array;
+		output[i][dataCount] = swapCount;
+		output[i][dataCount + 1] = compCount;
 
-		// Put the data in output array 
-		// pairs of (k, k + 1) represent 
-		// the swap, comp count tuples
-		output[0][dataCount] = swapCount;
-		output[0][dataCount + 1] = compCount;
-		dataCount += 2;
+		// Start over the loop but this time for the 
+		// 10 k down values this will not create an
+		// infinite loop and will only restart it once
+		if (i == 4 and up){
+			dataCount = 14;
+			up = false;
+			i = 0;
+		}
 	}
-
-	swapCount = 0; compCount = 0;
-	int i = 0;
-	int j = 9999;
-	array = new int[10000];
-	while(i <= 0){
-		array[i] = i + 1;
-		i++;
-	}
-
-	// 10k up case
-	insertion(array, size, swapCount, compCount);
-	output[0][dataCount++] = swapCount;
-	output[0][dataCount++] = compCount;
-
-	while(j >= 9999){
-		array[j] = j + 1;
-		j--;
-	}
-
-	// 10k down case
-	insertion(array, size, swapCount, compCount);
-	output[0][dataCount++] = swapCount;
-	output[0][dataCount++] = compCount;
-
-	delete array;
 }
 
 void displayData(unsigned int output[5][16]){
@@ -222,7 +261,7 @@ void displayData(unsigned int output[5][16]){
 	stringstream str_s;
 	string outStr;
 	// TODO: change this to i < 5
-	for (int i = 0; i < 1; i++){
+	for (int i = 0; i < 5; i++){
 		cout << left << setw(nameWidth) << setfill(separator) << algs[i];
 		for (int j = 0; j < 16; j+= 2){
 
@@ -243,7 +282,7 @@ int main(){
 
 	// Intializing random number generator
 	srand(time(NULL));
-	getInsertionData(output);
+	getAlgorithmData(output);
 	displayData(output);
 
 	return 0;
