@@ -23,9 +23,7 @@ void insertion(int *arr, int size, int &swapCount, int &compCount) {
 	}
 }
 
-void bubble(int *arr, int size) {
-	int swapCount = 0;
-	int compCount = 0;
+void bubble(int *arr, int size, int &swapCount, int &compCount) {
 	for (int i = 0; i < size - 1; i++){
 		for (int j = size-1; j > i; j--){
 			if (arr[j] < arr[j-1]){
@@ -35,14 +33,9 @@ void bubble(int *arr, int size) {
 			compCount++;
 		}
 	}
-
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
 }
 
-void selection(int *arr, int size) { 
-	int swapCount = 0;
-	int compCount = 0;
+void selection(int *arr, int size, int &swapCount, int &compCount) { 
 	for (int i = 0; i < size-1; i++) { 
 		int lowindex = i; 
 		for (int j = size-1; j > i; j--){ 
@@ -53,9 +46,6 @@ void selection(int *arr, int size) {
 		swap(arr, i, lowindex);
 		swapCount++;
 	}
-
-	cout << "swaps: " << swapCount << endl;
-	cout << "comps: " << compCount << endl;
 }
 
 void mergesort(int arr[], int temp[], int left, int right) {
@@ -113,15 +103,8 @@ void shuffle(int *arr, int size){
 	}	
 }
 
-void viewArray(int *arr, int size){
-	for (int i = 0; i < size; i++){
-		cout << arr[i] << " ";
-	}
-	cout << endl;
-}
-
 // Returns a pointer to an array that has 
-// been dynamic allocated and intialized
+// been dynamically allocated and intialized
 // with random values from 0 to 10^i - 1
 int* intialize(int i){
 	int size = pow(10, i);
@@ -133,6 +116,13 @@ int* intialize(int i){
 	}
 
 	return arr;
+}
+
+void viewArray(int *arr, int size){
+	for (int i = 0; i < size; i++){
+		cout << arr[i] << " ";
+	}
+	cout << endl;
 }
 
 int main(){
@@ -155,19 +145,28 @@ int main(){
 
 	cout << "swaps: " << swapCount << endl;
 	cout << "comps: " << compCount << endl;
+	swapCount = 0; compCount = 0;
 
 
 	cout << "Bubble" << endl;
 	shuffle(array, 10);
 	viewArray(array, 10);
-	bubble(array, 10);
+	bubble(array, 10, swapCount, compCount);
 	viewArray(array, 10);
+
+	cout << "swaps: " << swapCount << endl;
+	cout << "comps: " << compCount << endl;
+	swapCount = 0; compCount = 0;
 
 	cout << "Selection" << endl;
 	shuffle(array, 10);
 	viewArray(array, 10);
-	selection(array, 10);
+	selection(array, 10, swapCount, compCount);
 	viewArray(array, 10);
+
+	cout << "swaps: " << swapCount << endl;
+	cout << "comps: " << compCount << endl;
+	swapCount = 0; compCount = 0;
 
 	cout << "Merge sort" << endl;
 	shuffle(array, 10);
