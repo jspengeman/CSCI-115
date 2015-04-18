@@ -13,7 +13,6 @@ void swap(int *arr, int x, int y){
 	arr[y] = temp; 
 }
 
-// Had to use unsigned ints here to keep count for the swaps and comps
 void insertion(int *arr, int size, unsigned int &swapCount, unsigned int &compCount) {
 	for (int i = 1; i < size; i++){
 		for (int j = i; j > 0; j--){
@@ -79,7 +78,8 @@ void mergesort(int arr[], int temp[], int left, int right, unsigned int &compCou
 
 inline int findpivot(int arr[], int i, int j) { return (i+j)/2; }
 
-inline int partition(int arr[], int l, int r, int& pivot, unsigned int &swapCount, unsigned int &compCount) {
+inline int partition(int arr[], int l, int r, int& pivot, 
+					 unsigned int &swapCount, unsigned int &compCount) {
 	do { // Move the bounds inward until they meet
 		// Move l right and left with these loops
 		while (arr[++l] < pivot) compCount++; 
@@ -90,7 +90,9 @@ inline int partition(int arr[], int l, int r, int& pivot, unsigned int &swapCoun
 		return l; 
 }
 
-void quicksort(int arr[], int i, int j, unsigned int &swapCount, unsigned int &compCount) {
+void quicksort(int arr[], int i, int j, 
+			   unsigned int &swapCount, 
+			   unsigned int &compCount) {
 	if (j <= i) return;
 	int pivotindex = findpivot(arr, i, j);
 	swap(arr, pivotindex, j); 
@@ -125,6 +127,8 @@ int* intialize(int i){
 	return arr;
 }
 
+// Intializes an array of 10k elements
+// in ascending or descending order
 int* upDownIntialize(bool isUp){
 	int* arr = new int[10000];
 	int x = 0;
@@ -146,13 +150,10 @@ int* upDownIntialize(bool isUp){
 	return arr;
 }
 
-void viewArray(int *arr, int size){
-	for (int i = 0; i < size; i++){
-		cout << arr[i] << " ";
-	}
-	cout << endl;
-}
-
+// This function calls all of the sorting algorithms
+// index 0 - 4 of output for the outter array represents
+// the desired algorithm to be called. Notice the 
+// usage of the switch statements.
 void getAlgorithmData(unsigned int output[5][16]){
 	int *array;
 	int size, dataCount;
@@ -207,9 +208,11 @@ void getAlgorithmData(unsigned int output[5][16]){
 	bool up = true;
 	dataCount = 12;	
 	size = 10000;
-	swapCount = 0; compCount = 0; 
 	temp = upDownIntialize(false); // Allocate a junk 10k size temp array
 	for(int i = 0; i <= 4; i++){
+		swapCount = 0;
+		compCount = 0;
+
 		array = upDownIntialize(up);
 		switch(i){
 			case 0: insertion(array, size, swapCount, compCount); break;
@@ -221,13 +224,8 @@ void getAlgorithmData(unsigned int output[5][16]){
 		}
 		delete array;
 
-		cout << endl;
-		cout << i << " : " << swapCount;
-		cout << endl;
-
 		output[i][dataCount] = swapCount;
 		output[i][dataCount + 1] = compCount;
-
 
 		// Start over the loop but this time for the 
 		// 10 k down values this will not create an
@@ -240,6 +238,7 @@ void getAlgorithmData(unsigned int output[5][16]){
 	}
 }
 
+// Displays the data to the console in readable chunks
 void displayData(unsigned int output[5][16]){
 	for (int i = 0; i < 5; i++){
 		switch(i){
@@ -270,6 +269,7 @@ void displayData(unsigned int output[5][16]){
 	}
 }
 
+// This function takes the output and puts it into a csv file
 void createOuputCSV(unsigned int output[5][16]){
 	cout << "Please check your local file system's current directory for";
 	cout << " a copy of output.csv, please note you will need to space out";
@@ -302,14 +302,18 @@ void createOuputCSV(unsigned int output[5][16]){
 
 int main(){
 	// Output for the swap and compares
+	// pairs of index (0, 1), (2, 3) 
+	// represent the (swaps, comps)
+	// Notice there are 8 columns of data
+	// and the inner array has 16 elements
 	unsigned int output[5][16];
-
 	// Intializing random number generator
 	srand(time(NULL));
 	// Call function that calls all sorts
 	getAlgorithmData(output);
 	// Display all of the sorting alg data
 	displayData(output);
+	// Puts the output into a csv file
 	createOuputCSV(output);
 
 	return 0;
