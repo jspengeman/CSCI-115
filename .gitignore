@@ -33,3 +33,5 @@ main
 *.png
 */.DS_STORE
 .DS_STORE
+*.csv
+*/*.csv

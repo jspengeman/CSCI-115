@@ -3,8 +3,7 @@
 #include <time.h>
 #include <math.h> 
 #include <string>
-#include <sstream>
-#include <iomanip>
+#include <fstream>
 
 using namespace std;
 
@@ -52,7 +51,7 @@ void selection(int *arr, int size, unsigned int &swapCount, unsigned int &compCo
 	}
 }
 
-void mergesort(int arr[], int temp[], unsigned int left, int right, unsigned int &compCount) {
+void mergesort(int arr[], int temp[], int left, int right, unsigned int &compCount) {
 	// Merge sort is unique in the fact that it does no swapping, pretty neat.
 	if (left == right) return; 
 	int mid = (left+right)/2;
@@ -80,7 +79,7 @@ void mergesort(int arr[], int temp[], unsigned int left, int right, unsigned int
 
 inline int findpivot(int arr[], int i, int j) { return (i+j)/2; }
 
-inline int partition(int arr[], int l, int r, int& pivot,  unsigned int &swapCount, unsigned int &compCount) {
+inline int partition(int arr[], int l, int r, int& pivot, unsigned int &swapCount, unsigned int &compCount) {
 	do { // Move the bounds inward until they meet
 		// Move l right and left with these loops
 		while (arr[++l] < pivot) compCount++; 
@@ -91,7 +90,7 @@ inline int partition(int arr[], int l, int r, int& pivot,  unsigned int &swapCou
 		return l; 
 }
 
-void quicksort(int arr[], int i, int j,  unsigned int &swapCount, unsigned int &compCount) {
+void quicksort(int arr[], int i, int j, unsigned int &swapCount, unsigned int &compCount) {
 	if (j <= i) return;
 	int pivotindex = findpivot(arr, i, j);
 	swap(arr, pivotindex, j); 
@@ -155,14 +154,16 @@ void viewArray(int *arr, int size){
 }
 
 void getAlgorithmData(unsigned int output[5][16]){
-	// Index zero represents insertion sort data
 	int *array;
 	int size, dataCount;
 	unsigned int swapCount, compCount;
-
+	int *temp;
 	
-	// TODO: change this back to i <= 6
-	for(int j = 0; j < 6; j++){	
+	// Call all sorting algorithms for all sizes
+	// You will notice that a temp array is 
+	// dynamic created as well although it is 
+	// only used for the merge sort algorithm
+	for(int j = 0; j <= 4; j++){	
 		dataCount = 0;
 		for(int i = 1; i <= 6; i++){
 			swapCount = 0; compCount = 0;
@@ -170,18 +171,29 @@ void getAlgorithmData(unsigned int output[5][16]){
 			array = intialize(i);
 			shuffle(array, size);
 
+			if (j == 3){
+				// If mergesort allocate a junk temp array
+				temp = intialize(i);
+			}
+
 			// Call the desired algorithm here
 			// 10k up and down rows will be populated later
 			switch(j){
 				// case 0: insertion(array, size, swapCount, compCount); break;
 				// case 1: bubble(array, size, swapCount, compCount); break;
 				// case 2: selection(array, size, swapCount, compCount); break;
-				case 3: mergesort(array, 0, size - 1, swapCount, compCount); break;
+				case 3: mergesort(array, temp, 0, size - 1, compCount); break;
 				case 4: quicksort(array, 0, size - 1, swapCount, compCount); break;
 				default: cout << "Error 1" << endl; break;
 			}
 
 			delete array;
+
+			if (j == 3){
+				// If mergesort free the junk temp array
+				delete temp;
+			}
+
 			// Put the data in output array 
 			// pairs of (k, k + 1) represent 
 			// the swap, comp count tuples
@@ -196,21 +208,26 @@ void getAlgorithmData(unsigned int output[5][16]){
 	dataCount = 12;	
 	size = 10000;
 	swapCount = 0; compCount = 0; 
+	temp = upDownIntialize(false); // Allocate a junk 10k size temp array
 	for(int i = 0; i <= 4; i++){
 		array = upDownIntialize(up);
-
 		switch(i){
 			case 0: insertion(array, size, swapCount, compCount); break;
 			case 1: bubble(array, size, swapCount, compCount); break;
 			case 2: selection(array, size, swapCount, compCount); break;
-			case 3: mergesort(array, 0, size - 1, swapCount, compCount); break;
+			case 3: mergesort(array, temp, 0, size - 1, compCount); break;
 			case 4: quicksort(array, 0, size - 1, swapCount, compCount); break;
 			default: cout << "Error 2" << endl; break;
 		}
-
 		delete array;
+
+		cout << endl;
+		cout << i << " : " << swapCount;
+		cout << endl;
+
 		output[i][dataCount] = swapCount;
 		output[i][dataCount + 1] = compCount;
+
 
 		// Start over the loop but this time for the 
 		// 10 k down values this will not create an
@@ -218,62 +235,69 @@ void getAlgorithmData(unsigned int output[5][16]){
 		if (i == 4 and up){
 			dataCount = 14;
 			up = false;
-			i = 0;
+			i = -1; // Set to negative one because it needs to be zero on next loop
 		}
 	}
 }
 
 void displayData(unsigned int output[5][16]){
-	const char separator = ' ';
-   	int nameWidth = 10;
-    int numWidth = 15;
-
-    cout << left << setw(nameWidth) << setfill(separator) << "Algorithm";
-    cout << left << setw(nameWidth) << setfill(separator) << "10";
-    cout << left << setw(numWidth) << setfill(separator) << "100";
-    cout << left << setw(numWidth) << setfill(separator) << "1,000";
-    cout << left << setw(numWidth) << setfill(separator) << "10,000";
-    cout << left << setw(numWidth) << setfill(separator) << "100,000";
-    cout << left << setw(numWidth) << setfill(separator) << "1,000,000";
-    cout << left << setw(numWidth) << setfill(separator) << "10K Up";
-    cout << left << setw(numWidth) << setfill(separator) << "10K Down";
-    cout << endl;
-
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << left << setw(numWidth) << setfill(separator) << "----------";
-    cout << endl;
-
-    nameWidth = 40;
-    numWidth = 50;
-
-	string algs[5] = {
-		"Insertion", "Bubble", "Selection",
-		"Merge", "Quick"
-	};
-
-	stringstream str_s;
-	string outStr;
-	// TODO: change this to i < 5
 	for (int i = 0; i < 5; i++){
-		cout << left << setw(nameWidth) << setfill(separator) << algs[i];
-		for (int j = 0; j < 16; j+= 2){
+		switch(i){
+			case 0: cout << "Insertion: " << endl; break;
+			case 1: cout << "Bubble: " << endl; break;
+			case 2: cout << "Selection: " << endl; break;
+			case 3: cout << "Merge: " << endl; break;
+			case 4: cout << "Quick: " << endl; break;
+			default: cout << "Error 3" << endl; break;
+		}
+		for (int j = 0; j < 15; j+= 2){
+			switch(j){
+				case 0: cout << "10: "; break;
+				case 2: cout << "100: "; break;
+				case 4: cout << "1,000: "; break;
+				case 6: cout << "10,000: "; break;
+				case 8: cout << "100,000: "; break;
+				case 10: cout << "1,000,000: "; break;
+				case 12: cout << "10k up: "; break;
+				case 14: cout << "10K down: "; break;
+				default: cout << "Error 4" << endl; break;
+			}
 
-			str_s << output[i][j];
-			str_s << ",";
-			str_s << output[i][j + 1];
-			outStr = str_s.str();
-
-			cout << left << setw(nameWidth) << setfill(separator) << outStr;
+			cout << output[i][j] << ",";
+			cout << output[i][j + 1] << endl;
 		}
 		cout << endl;
 	}
+}
+
+void createOuputCSV(unsigned int output[5][16]){
+	cout << "Please check your local file system's current directory for";
+	cout << " a copy of output.csv, please note you will need to space out";
+	cout << " the columns of the spread sheet yourself" << endl;
+
+	ofstream output_file;
+	output_file.open("output.csv");
+	// Declare header row of file
+	output_file << "Algorithm, 10, 100, 1000, 10000, 100000, 1000000, 10K Up, 10K Down \n";
+	for (int i = 0; i < 5; i++){
+		switch(i){
+			case 0: output_file << "Insertion,"; break;
+			case 1: output_file << "Bubble,"; break;
+			case 2: output_file << "Selection,"; break;
+			case 3: output_file << "Merge,"; break;
+			case 4: output_file << "Quick,"; break;
+			default: cout << "Error 3" << endl; break;
+		}
+
+		// Swaps and comps are seperated by /
+		for(int j = 0; j < 15; j+= 2){
+			output_file << output[i][j];
+			output_file << "/";
+			output_file << output[i][j + 1] << ",";		
+		}
+		output_file << "\n";
+	}
+	output_file.close();
 }
 
 int main(){
@@ -282,8 +306,11 @@ int main(){
 
 	// Intializing random number generator
 	srand(time(NULL));
+	// Call function that calls all sorts
 	getAlgorithmData(output);
+	// Display all of the sorting alg data
 	displayData(output);
+	createOuputCSV(output);
 
 	return 0;
 }
