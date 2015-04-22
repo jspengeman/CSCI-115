@@ -39,7 +39,7 @@ public:
 
 	void update(char *key){
 		int index = sfold(key);
-		string str_key == data[index].key = string(key);
+		string str_key = string(key);
 		// Increment the number of updates for current size
 		updates[c_size]++; 
 
@@ -55,6 +55,7 @@ public:
 				int curr = index;
 
 				while(data[curr].key != EMPTYKEY && data[curr].key != str_key){
+					cout << data[curr].key << endl;
 					curr = ++curr % HASHSIZE; 
 					cost[c_size]++;
 				}
