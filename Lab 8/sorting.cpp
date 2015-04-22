@@ -180,9 +180,9 @@ void getAlgorithmData(unsigned int output[5][16]){
 			// Call the desired algorithm here
 			// 10k up and down rows will be populated later
 			switch(j){
-				// case 0: insertion(array, size, swapCount, compCount); break;
-				// case 1: bubble(array, size, swapCount, compCount); break;
-				// case 2: selection(array, size, swapCount, compCount); break;
+				case 0: insertion(array, size, swapCount, compCount); break;
+				case 1: bubble(array, size, swapCount, compCount); break;
+				case 2: selection(array, size, swapCount, compCount); break;
 				case 3: mergesort(array, temp, 0, size - 1, compCount); break;
 				case 4: quicksort(array, 0, size - 1, swapCount, compCount); break;
 				default: cout << "Error 1" << endl; break;
