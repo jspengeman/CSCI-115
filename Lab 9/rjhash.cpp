@@ -37,7 +37,7 @@ public:
 	int count(int index){ return data[index].value; }
 	int probes(){ return cost[c_size - 1]; } // Double check this
 
-	void update(char *key){
+	void update(const char *key){
 		int index = sfold(key);
 		string str_key = string(key);
 		// Increment the number of updates for current size
@@ -93,7 +93,7 @@ public:
 		}
 	}
 
-	int sfold(char* key) {
+	int sfold(const char* key) {
 		unsigned int *lkey = (unsigned int *)key;
 		int intlength = strlen(key)/4;
 		unsigned int sum = 0;
@@ -121,13 +121,8 @@ public:
     if (!file.is_open()) return;
 
     string word;
-    char* cword;
     while (file >> word){
-    		// Casting a string to a write-able char*
-    		cword = new char[word.length() + 1];
-    		strcpy(cword, word.c_str());
-    		update(cword);
-    		delete [] cword;
+    		update(word.c_str());
 	    }
 	}
 
