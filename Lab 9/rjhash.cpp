@@ -3,6 +3,7 @@
 #include <array>
 #include <math.h> 
 #define HASHSIZE 4001
+#define EMPTYKEY ""
 
 using namespace std;
 
@@ -35,18 +36,13 @@ public:
 	void reset(){ curr = -1; }
 	int count(int index){ return data[index].value; }
 	int probes(){ return cost[c_size - 1]; } // Double check this
-	int p(int i){ return pow(i, 2); } // Quadratic probing
 
 	void update(char *key){
-		int addr_value = 0;
-		string addr_key = "";
 		int index = sfold(key);
-		string str_key = string(key);
+		string str_key == data[index].key = string(key);
 		// Increment the number of updates for current size
 		updates[c_size]++; 
 
-		cout << index << endl;
-		cout << c_size << endl;
 		// Check if the string is not empty
 		if (data[index].key != ""){
 			// Check if the string is the same
@@ -55,38 +51,17 @@ public:
 			}
 			// String is different, do probing
 			else {
-				// Establish home element
-				string home = data[index].key;
-				// First probe index
-				int new_index = p(index);
-				new_index = new_index % HASHSIZE;
-
-				string curr = data[new_index].key;
-
-				// Infinite loop due to the probing method being used
-				// It is looping because it never goes directly back 
-				// to home which is being used as the looping sentinel
-
 				// Doing probing here
-				while(home != curr){	
-					// If current element is occupied
-					if (data[new_index].key != ""){
-						new_index = p(new_index);
-						new_index = new_index % HASHSIZE;
-						// Change curr to new value
-						curr = data[new_index].key;
-						// Costs is incremented before the size is incremented
-						cost[c_size]++;
-					}
-					// Current element isn't occupied
-					// Set value at this index
-					else {
-						data[new_index].key = str_key;
-						data[new_index].value++;
-						c_size++;
-						return;
-					}
+				int curr = index;
+
+				while(data[curr].key != EMPTYKEY && data[curr].key != str_key){
+					curr = ++curr % HASHSIZE; 
+					cost[c_size]++;
 				}
+
+				cout << "curr: "<< curr << endl;
+				data[curr].key = str_key;
+				data[curr].value++;
 				c_size++;
 			}
 		}
@@ -172,7 +147,7 @@ int main(){
 	// These two values hash to the same thing use for testing
 	// test->update("some");
 	// test->update("dare");
-	// test->viewHash();
+	test->viewHash();
 
 	return 0;
 }
