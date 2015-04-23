@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <array>
+#include <iomanip>
 #include <math.h> 
 #define HASHSIZE 4001
 #define EMPTYKEY ""
@@ -51,19 +52,18 @@ public:
 			}
 			// String is different, do probing
 			else {
+				int current = index;
 				// Doing probing here
-				int curr = index;
-
-				while(data[curr].key != EMPTYKEY && data[curr].key != str_key){
-					cout << data[curr].key << endl;
-					curr = ++curr % HASHSIZE; 
+				while(data[current].key != EMPTYKEY && data[current].key != str_key){
+					current = ++current % HASHSIZE; 
 					cost[c_size]++;
 				}
 
-				cout << "curr: "<< curr << endl;
-				data[curr].key = str_key;
-				data[curr].value++;
-				c_size++;
+				data[current].value++;
+				if (data[current].key != str_key){
+					data[current].key = str_key;
+					c_size++;
+				}
 			}
 		}
 		else {
@@ -126,25 +126,77 @@ public:
 	    }
 	}
 
+	void swap(int i, int j){
+		string temp = data[i].key;
+		data[i].key = data[j].key;
+		data[j].key = temp;
+
+		int vtemp = data[i].value;
+		data[i].value = data[j].value;
+		data[j].value = vtemp;
+	}
+
+	inline int findpivot(int i, int j) { return (i+j)/2; }
+
+	inline int partition(int l, int r, int& pivot) {
+		do { 
+			while (data[++l].value < pivot); 
+			while ((l < r) && (pivot < data[--r].value)); 
+			swap(l, r);
+		} while (l < r); 
+			return l; 
+	}
+
+	void qsort(int i, int j) {
+		if (j <= i) return;
+		int pivotindex = findpivot(i, j);
+		swap(pivotindex, j); 
+		int k = partition(i-1, j, data[j].value);
+		swap(k, j); 
+		qsort(i, k-1);
+		qsort(k+1, j);
+	}
+
 	void viewHash(){
 		for(int i = 0; i < HASHSIZE; i++){
-			cout << endl;
 			cout << "Key: "<< data[i].key << endl;
 			cout << "Value: "<<data[i].value << endl;
 		}
-		cout << "Size: " << c_size << endl;
 	}
+
+	void viewOutput(){
+		float ratio = 0.0;
+		for(int i = 0; i < HASHSIZE; i++){
+			// For i=3684 and on dont display data cause they are all 0
+			if (updates[i] == 0 && cost[i] == 0){ return; }
+			ratio = float(cost[i])/float(updates[i]);
+			cout << fixed << setprecision(2) << ratio;
+			cout << ", ";
+		}
+		cout << endl;
+	}
+
+	void mostUsed(){
+		qsort(0, HASHSIZE - 1);
+
+		cout << "24 most used words" << endl;
+		int count = 1;
+		for(int i = HASHSIZE - 1; i >= 0; i--){
+			cout << count << ": " << data[i].key;
+			cout << " (" << data[i].value << ")" << endl;
+			if (count == 24){ return;}
+			count++;
+		}
+	}
+
 };
 
 int main(){
-	Hash *test = new Hash;
-	test->readFile();
-
-	// These two values hash to the same thing use for testing
-	// test->update("some");
-	// test->update("dare");
-	test->viewHash();
-
+	Hash *data = new Hash;
+	data->readFile();
+	data->viewOutput();
+	cout << endl << "Number of unique words: " << data->size() << endl;
+	data->mostUsed();
 	return 0;
 }
 
