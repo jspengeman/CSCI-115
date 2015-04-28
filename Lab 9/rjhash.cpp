@@ -116,7 +116,7 @@ public:
 
 	void readFile(){
     ifstream file;
-    file.open ("RomeoAndJuliet.txt");
+    file.open("RomeoAndJuliet.txt");
     
     if (!file.is_open()) return;
 
@@ -179,12 +179,12 @@ public:
 	void mostUsed(){
 		qsort(0, HASHSIZE - 1);
 
-		cout << "24 most used words" << endl;
+		cout << "20 most used words" << endl;
 		int count = 1;
 		for(int i = HASHSIZE - 1; i >= 0; i--){
 			cout << count << ": " << data[i].key;
 			cout << " (" << data[i].value << ")" << endl;
-			if (count == 24){ return;}
+			if (count == 20){ return;}
 			count++;
 		}
 	}
