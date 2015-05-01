@@ -1,7 +1,12 @@
 #include "graph.h"
 
 class AdjGraph : public Graph {
+private:
+	int numVertex, numEdge;
+	int* edges;
+	int* mark;
 public:	
+	AdjGraph(int numVert);
 	~AdjGraph();
 	void Init(int n);
 	int n();
@@ -16,6 +21,7 @@ public:
 	void setMark(int v, int val);
 	Graph *read_graph(string filename);  
 	bool write_graph(Graph *g, string filename); 
+	int calculate_edge(int vertex1, int vertex2);
 };
 
 

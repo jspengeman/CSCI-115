@@ -1,35 +1,79 @@
 #include "graphm.h"
+#define UNVISITED -1;
 
-// AdjGraph::AdjGraph(){}
+#include <iostream>
+using namespace std;
 
-AdjGraph::~AdjGraph(){}
+int AdjGraph::n() { return numVertex; }
 
-void AdjGraph::Init(int n){}
+int AdjGraph::e() { return numEdge; }
 
-int AdjGraph::e(){ return 0; }
+AdjGraph::AdjGraph(int numVert){ Init(numVert); }
 
-int AdjGraph::n(){ return 0; }
+AdjGraph::~AdjGraph(){ delete [] mark; delete [] edges; }
 
-int AdjGraph::first(int v){ return 0; };
+void AdjGraph::Init(int n){
+	int i;
+	numVertex = n;
+	numEdge = 0;
+	mark = new int[n]; 
+	edges = new int[n];
 
-int AdjGraph::next(int v, int w){ return 0; };
+	for (i=0; i<numVertex; i++)
+		mark[i] = UNVISITED;
 
-void AdjGraph::setEdge(int v1, int v2, int wght){};
+	for (i = 0; i < numVertex; i++) 
+		edges[i] = 0;
+}
 
-void AdjGraph::delEdge(int v1, int v2){}
+int AdjGraph::first(int v){ 
+	for (int i = 0; i < numVertex; i++)
+		if (edges[calculate_edge(v, i)] != 0) return i;
+	return numVertex;
+};
 
-bool AdjGraph::isEdge(int i, int j){ return false; }
+int AdjGraph::next(int v, int w){ 
+	for(int i = w + 1; i < numVertex; i++)
+		if (edges[calculate_edge(v, i)] != 0) return i;
+	return numVertex;
+};
 
-int AdjGraph::weight(int v1, int v2){ return 0; }
+void AdjGraph::setEdge(int v1, int v2, int wght){
+	if (edges[calculate_edge(v1, v2)] == 0) numEdge++;
+	edges[calculate_edge(v1, v2)] = wght;
+};
 
-int AdjGraph::getMark(int v){ return 0; }
+void AdjGraph::delEdge(int v1, int v2){
+	if (edges[calculate_edge(v1, v2)] != 0) numEdge--;
+	edges[calculate_edge(v1, v2)] = 0;
+}
 
-void AdjGraph::setMark(int v, int val){}
+bool AdjGraph::isEdge(int i, int j){ 
+	return edges[calculate_edge(i, j)] != 0; 
+}
+
+int AdjGraph::weight(int v1, int v2){ 
+	return edges[calculate_edge(v1, v2)]; 
+}
+
+int AdjGraph::getMark(int v){ return mark[v]; }
+
+void AdjGraph::setMark(int v, int val){ mark[v] = val; }
 
 Graph* AdjGraph::read_graph(string filename) { return NULL; }  
 
 bool AdjGraph::write_graph(Graph *g, string filename) { return false; } 
 
+int AdjGraph::calculate_edge(int vertex1, int vertex2){
+	return ((vertex1 * (vertex1 - 1)) / 2) + vertex2;
+}
+
 int main(){
+	AdjGraph *test = new AdjGraph(5);
+	test->setEdge(1, 2, 50);
+	test->setEdge(1, 3, 100);
+	test->setEdge(2, 4, 70);
+	cout << test->weight(2, 4) << endl;
+	cout << test->next(2, 2) << endl;
 	return 0;
 }
