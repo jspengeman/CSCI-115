@@ -49,7 +49,4 @@ public:
 	// val: The value to set
 	virtual int getMark(int v) = 0;
 	virtual void setMark(int v, int val) = 0;
-
-	virtual Graph *read_graph(string filename) = 0;  
-	virtual	bool write_graph(Graph *g, string filename) = 0; 
 };

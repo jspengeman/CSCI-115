@@ -6,6 +6,7 @@ private:
 	int* edges;
 	int* mark;
 public:	
+	AdjGraph();
 	AdjGraph(int numVert);
 	~AdjGraph();
 	void Init(int n);
@@ -18,10 +19,20 @@ public:
 	bool isEdge(int i, int j);
 	int weight(int v1, int v2);
 	int getMark(int v);
-	void setMark(int v, int val);
-	Graph *read_graph(string filename);  
-	bool write_graph(Graph *g, string filename); 
+	void setMark(int v, int val); 
 	int calculate_edge(int vertex1, int vertex2);
 };
+
+// Simple data structure used to store info
+// when reading in the graph points from 
+// an external file
+struct GraphInfo {
+	int v1;
+	int v2;
+	int wt;
+};
+
+Graph *read_graph(string filename);  
+bool write_graph(Graph *g, string filename);
 
 

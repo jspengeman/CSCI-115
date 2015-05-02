@@ -1,12 +1,18 @@
 #include "graphm.h"
+#include <fstream>
+#include <iostream>
+#include <ostream>
+#include <vector>
+#include <string>
 #define UNVISITED -1;
 
-#include <iostream>
 using namespace std;
 
 int AdjGraph::n() { return numVertex; }
 
 int AdjGraph::e() { return numEdge; }
+
+AdjGraph::AdjGraph(){}
 
 AdjGraph::AdjGraph(int numVert){ Init(numVert); }
 
@@ -60,20 +66,64 @@ int AdjGraph::getMark(int v){ return mark[v]; }
 
 void AdjGraph::setMark(int v, int val){ mark[v] = val; }
 
-Graph* AdjGraph::read_graph(string filename) { return NULL; }  
-
-bool AdjGraph::write_graph(Graph *g, string filename) { return false; } 
-
-int AdjGraph::calculate_edge(int vertex1, int vertex2){
-	return ((vertex1 * (vertex1 - 1)) / 2) + vertex2;
+int AdjGraph::calculate_edge(int v1, int v2){
+	if (v1 > v2) return calculate_edge(v2, v1);
+	return ((v1 * (v1 - 1)) / 2) + v2;
 }
 
+Graph* read_graph(string filename) {
+	/* 
+	 * Reads in a csv file in the format of
+	 * vertex 1, vertex2, weight. From there
+	 * it parses the file by getting each 
+	 * required element for the call to setEdge
+	 * when it has all the values required, which 
+	 * is when count is equal to three, it will 
+	 * then push temp to the vector then the 
+	 * vector is later used to create the graph
+	 */
+	ifstream input_file(filename);
+	string part;
+	vector<GraphInfo> points;
+	GraphInfo temp;
+	int v1, v2, wt;
+
+	int count = 0;
+	while(getline(input_file, part, ',')){
+		// Get each arguement for the edge construction
+		count++;
+		switch(count){
+			case 1: v1 = stoi(part); break;
+			case 2: v2 = stoi(part); break;
+			case 3: wt = stoi(part); break;
+		}
+		// Push temp onto the vector to save the 
+		// point in the graph so it can be added
+		if (count % 3 == 0){
+			count = 1;
+			temp.v1 = v1; 
+			temp.v2 = v2; 
+			temp.wt = wt;
+			points.push_back(temp);
+		}
+	}
+
+	// Create the graph object from the points in the vector
+	AdjGraph *new_graph = new AdjGraph(points.size());
+	for(int i = 0; i < points.size(); i++){
+		new_graph->setEdge(points[i].v1, points[i].v2, points[i].wt);
+	}
+	return new_graph;
+}  
+
+bool write_graph(Graph *g, string filename) {
+	ofstream output_file(filename);
+
+
+} 
+
 int main(){
-	AdjGraph *test = new AdjGraph(5);
-	test->setEdge(1, 2, 50);
-	test->setEdge(1, 3, 100);
-	test->setEdge(2, 4, 70);
-	cout << test->weight(2, 4) << endl;
-	cout << test->next(2, 2) << endl;
+	Graph *test = read_graph("input.csv");
+	cout << test->isEdge(3, 1) << endl;
 	return 0;
 }
