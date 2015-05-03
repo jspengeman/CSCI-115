@@ -1,14 +1,14 @@
 #include "graph.h"
 
-class AdjGraph : public Graph {
+class GraphM : public Graph {
 private:
 	int numVertex, numEdge;
 	int* edges;
 	int* mark;
 public:	
-	AdjGraph();
-	AdjGraph(int numVert);
-	~AdjGraph();
+	GraphM();
+	GraphM(int numVert);
+	~GraphM();
 	void Init(int n);
 	int n();
 	int e();

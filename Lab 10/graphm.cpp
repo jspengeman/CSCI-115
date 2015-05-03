@@ -8,17 +8,17 @@
 #include <iostream>
 using namespace std;
 
-int AdjGraph::n() { return numVertex; }
+int GraphM::n() { return numVertex; }
 
-int AdjGraph::e() { return numEdge; }
+int GraphM::e() { return numEdge; }
 
-AdjGraph::AdjGraph(){}
+GraphM::GraphM(){}
 
-AdjGraph::AdjGraph(int numVert){ Init(numVert); }
+GraphM::GraphM(int numVert){ Init(numVert); }
 
-AdjGraph::~AdjGraph(){ delete [] mark; delete [] edges; }
+GraphM::~GraphM(){ delete [] mark; delete [] edges; }
 
-void AdjGraph::Init(int n){
+void GraphM::Init(int n){
 	int i;
 	numVertex = n;
 	numEdge = 0;
@@ -32,41 +32,41 @@ void AdjGraph::Init(int n){
 		edges[i] = 0;
 }
 
-int AdjGraph::first(int v){ 
+int GraphM::first(int v){ 
 	for (int i = 0; i < numVertex; i++)
 		if (edges[calculate_edge(v, i)] != 0) return i;
 	return numVertex;
 };
 
-int AdjGraph::next(int v, int w){ 
+int GraphM::next(int v, int w){ 
 	for(int i = w + 1; i < numVertex; i++)
 		if (edges[calculate_edge(v, i)] != 0) return i;
 	return numVertex;
 };
 
-void AdjGraph::setEdge(int v1, int v2, int wght){
+void GraphM::setEdge(int v1, int v2, int wght){
 	if (edges[calculate_edge(v1, v2)] == 0) numEdge++;
 	edges[calculate_edge(v1, v2)] = wght;
 };
 
-void AdjGraph::delEdge(int v1, int v2){
+void GraphM::delEdge(int v1, int v2){
 	if (edges[calculate_edge(v1, v2)] != 0) numEdge--;
 	edges[calculate_edge(v1, v2)] = 0;
 }
 
-bool AdjGraph::isEdge(int i, int j){ 
+bool GraphM::isEdge(int i, int j){ 
 	return edges[calculate_edge(i, j)] != 0; 
 }
 
-int AdjGraph::weight(int v1, int v2){ 
+int GraphM::weight(int v1, int v2){ 
 	return edges[calculate_edge(v1, v2)]; 
 }
 
-int AdjGraph::getMark(int v){ return mark[v]; }
+int GraphM::getMark(int v){ return mark[v]; }
 
-void AdjGraph::setMark(int v, int val){ mark[v] = val; }
+void GraphM::setMark(int v, int val){ mark[v] = val; }
 
-int AdjGraph::calculate_edge(int v1, int v2){
+int GraphM::calculate_edge(int v1, int v2){
 	if (v1 > v2) return calculate_edge(v2, v1);
 	return ((v1 * (v1 - 1)) / 2) + v2;
 }
@@ -113,7 +113,7 @@ Graph* read_graph(string filename) {
 	}
 
 	// Create the graph object from the points in the vector
-	AdjGraph *new_graph = new AdjGraph(points.size());
+	GraphM *new_graph = new GraphM(points.size());
 	for(int i = 0; i < points.size(); i++){
 		new_graph->setEdge(points[i].v1, points[i].v2, points[i].wt);
 	}
