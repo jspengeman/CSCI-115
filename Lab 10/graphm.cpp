@@ -71,6 +71,10 @@ int GraphM::calculate_edge(int v1, int v2){
 	return ((v1 * (v1 - 1)) / 2) + v2;
 }
 
+int GraphM::get_weight(int i){
+	return edges[i];
+}
+
 Graph* read_graph(string filename) {
 	/* 
 	 * Reads in a csv file in the format of
@@ -133,11 +137,11 @@ bool write_graph(Graph *g, string filename) {
 	ofstream output_file;
 	output_file.open(filename);
 
-	// for(int i = 0; i < g->e(); i++){
-	// 	if (g->get_edge(i) == 0) continue;
-	// 	output_file << i << "," << g->get_edge(i);
-	// 	output_file << "\n";
-	// }
+	for(int i = 0; i < g->e(); i++){
+		if (g->get_weight(i) == 0) continue;
+		output_file << i << "," << g->get_weight(i);
+		output_file << "\n";
+	}
 
 	output_file.close();
 	return true;

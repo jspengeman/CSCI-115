@@ -42,7 +42,7 @@ int main(){
 	cout << graph->next(3, 2) << endl;
 	cout << graph->next(2, 1) << endl;
 
-	// write_graph(graph, "output.csv");
+	write_graph(graph, "output.csv");
 
 	cout << "Heap tests" << endl;
 	int arr[15] = {5, 4, 3, 2, 1, 10, 9, 8, 7, 6};
