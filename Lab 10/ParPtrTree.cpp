@@ -20,7 +20,6 @@ ParPtrTree::ParPtrTree(int *arr, int n){
 
 // FIND with path compression
 int ParPtrTree::FIND(int curr) const {
-	cout << "curr: " << curr << endl;
 	if (array[curr] == ROOT) return curr; // At root
 	array[curr] = FIND(array[curr]);
 	return array[curr];
@@ -31,7 +30,6 @@ void ParPtrTree::UNION(int i, int j){
 	int iWeight = 0; int jWeight = 0;
 	int iTree = FIND(i); 
 	int jTree = FIND(j);
-	cout << iTree << " " << jTree << endl;
 
 	for(int x = 0; x < size; x++){
 		if (array[x] == iTree) iWeight++;
@@ -49,9 +47,11 @@ void ParPtrTree::UNION(int i, int j){
 bool ParPtrTree::differ(int i, int j){
 	// Returns true if they differ 
 	// and false if do not differ
-
+	int iTree = FIND(i);
+	int jTree = FIND(j);
+	cout << iTree << " " << jTree << endl;
 	if(array[i] == -1 && array[j] == -1) return true;
-	return array[i] != array[j];
+	return iTree != jTree;
 }
 
 void ParPtrTree::viewTree(){

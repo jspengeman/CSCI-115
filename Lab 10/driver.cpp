@@ -79,17 +79,34 @@ int main(){
 	int sets[10] = {-1, 0, 0, -1, 3, 3, -1, 6, 7, 8};
 	ParPtrTree *par_ptr_tree = new ParPtrTree(sets, 10);
 	par_ptr_tree->viewTree();
-	// This test uses to tree roots
-	// Which does not cause path compression
-	// since there is never a chance to compress
+	
+	/* This test uses to tree roots
+	 * Which does not cause path compression
+	 * since there is never a chance to compress
+	 */
 	par_ptr_tree->UNION(3, 6);
 	par_ptr_tree->viewTree();
-	// This test uses a node and a tree root
-	// Which will cause path compression because
-	// the find goes through each node to get to
-	// the root. Creating compression from node 9
+
+	/* This test uses a node and a tree root
+	 * Which will cause path compression because
+	 * the find goes through each node to get to
+	 * the root. Creating compression from node 9
+	 */ 
 	par_ptr_tree->UNION(1, 9);
 	par_ptr_tree->viewTree();
 
+	/* This test uses two nodes that are already
+	 * in the same test. This was my favorite case
+	 * because even though they are already in the 
+	 * same set path compression takes place because
+	 * the operation to check if they are in different
+	 * sets uses the FIND method with compresses the 
+	 * graph and makes it even more shallow. You will
+	 * notice that nodes 1 and 2 now point to the 
+	 * root node (3) after the union fails.
+	 */
+	par_ptr_tree->UNION(1, 9);
+	par_ptr_tree->UNION(2, 9);
+	par_ptr_tree->viewTree();
 	return 0;
 }
