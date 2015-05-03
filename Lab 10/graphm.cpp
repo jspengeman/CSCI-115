@@ -89,7 +89,6 @@ Graph* read_graph(string filename) {
 
 	fstComma = scdComma = 0;
 	while(getline(input_file, part)){
-		cout <<"part: "<< part << endl;
 		// Parse the string for commas
 		for(int i = 0; i < part.length(); i++){
 			if (part[i] == ',' && fstComma == 0){
@@ -122,7 +121,24 @@ Graph* read_graph(string filename) {
 }  
 
 bool write_graph(Graph *g, string filename) {
-	ofstream output_file(filename);
-	// TODO: Implement this function
+	/*
+	 * I could not figure out how to go from
+	 * a single edge index back to both vertices
+	 * so the output and input csv files are 
+	 * different. This one has the format of
+	 * edge index, weight. The data is derived
+	 * from the edges area and the related
+	 * weights stored at each index.
+	 */
+	ofstream output_file;
+	output_file.open(filename);
+
+	// for(int i = 0; i < g->e(); i++){
+	// 	if (g->get_edge(i) == 0) continue;
+	// 	output_file << i << "," << g->get_edge(i);
+	// 	output_file << "\n";
+	// }
+
+	output_file.close();
 	return true;
 } 

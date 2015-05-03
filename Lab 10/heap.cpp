@@ -33,7 +33,6 @@ public:
 	void buildHeap();
 	void insert(const E& it);
 	void viewHeap();
-	bool isHeap();
 	E removefirst();
 };
 
@@ -136,9 +135,9 @@ template <typename E, typename Comp>
 void heap<E, Comp>::viewHeap(){
 	cout << "Size: " << n << endl; 
 	for (int i = 0; i < n; i++){
-		cout << Heap[i] << endl;
+		cout << Heap[i] << " ";
 	}
-	isHeap();
+	cout << endl;
 }
 
 // Returns and removes the first element from the heap

@@ -6,6 +6,7 @@ private:
 	int FIND(int j) const; // Find root
 public:
 	ParPtrTree(int n); // Constructor
+	ParPtrTree(int *arr, int n);
 	~ParPtrTree() { delete [] array; } // Destructor
 	void UNION(int i, int j); // Merge equivalences
 	bool differ(int i, int j); // True if not in same tree
