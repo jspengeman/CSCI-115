@@ -1,11 +1,11 @@
 #include "graphm.h"
 #include <fstream>
-#include <iostream>
 #include <ostream>
 #include <vector>
 #include <string>
 #define UNVISITED -1;
 
+#include <iostream>
 using namespace std;
 
 int AdjGraph::n() { return numVertex; }
@@ -77,8 +77,7 @@ Graph* read_graph(string filename) {
 	 * vertex 1, vertex2, weight. From there
 	 * it parses the file by getting each 
 	 * required element for the call to setEdge
-	 * when it has all the values required, which 
-	 * is when count is equal to three, it will 
+	 * when it has all the values required, it will 
 	 * then push temp to the vector then the 
 	 * vector is later used to create the graph
 	 */
@@ -86,26 +85,32 @@ Graph* read_graph(string filename) {
 	string part;
 	vector<GraphInfo> points;
 	GraphInfo temp;
-	int v1, v2, wt;
+	int v1, v2, wt, fstComma, scdComma;
 
-	int count = 0;
-	while(getline(input_file, part, ',')){
-		// Get each arguement for the edge construction
-		count++;
-		switch(count){
-			case 1: v1 = stoi(part); break;
-			case 2: v2 = stoi(part); break;
-			case 3: wt = stoi(part); break;
+	fstComma = scdComma = 0;
+	while(getline(input_file, part)){
+		cout <<"part: "<< part << endl;
+		// Parse the string for commas
+		for(int i = 0; i < part.length(); i++){
+			if (part[i] == ',' && fstComma == 0){
+				fstComma = i;
+			}
+			else if (part[i] == ',') {
+				scdComma = i;
+			}
 		}
+
+		// Split the string at the commas and cast to integers
+		v1 = stoi(part.substr(0, fstComma));
+		v2 = stoi(part.substr(fstComma + 1, scdComma - 2));
+		wt = stoi(part.substr(scdComma + 1, part.length() - 1));
+
 		// Push temp onto the vector to save the 
 		// point in the graph so it can be added
-		if (count % 3 == 0){
-			count = 1;
-			temp.v1 = v1; 
-			temp.v2 = v2; 
-			temp.wt = wt;
-			points.push_back(temp);
-		}
+		temp.v1 = v1; 
+		temp.v2 = v2; 
+		temp.wt = wt;
+		points.push_back(temp);
 	}
 
 	// Create the graph object from the points in the vector
@@ -118,12 +123,6 @@ Graph* read_graph(string filename) {
 
 bool write_graph(Graph *g, string filename) {
 	ofstream output_file(filename);
-
-
+	// TODO: Implement this function
+	return true;
 } 
-
-int main(){
-	Graph *test = read_graph("input.csv");
-	cout << test->isEdge(3, 1) << endl;
-	return 0;
-}
