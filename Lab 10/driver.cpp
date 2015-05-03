@@ -67,17 +67,28 @@ int main(){
 	 * them. The trees are instantiated to a tree with
 	 * root zero with children nodes of 1 and 2. Then
 	 * the second tree with root 3 with children 4 and 5
-	 * then with a tree with root 6 and child 7. You can
-	 * view the union process below as the indexs begin
-	 * to switch because the roots are now changing.
+	 * then with a tree with root 6 and child 7, child 7
+	 * has node 8 as a child and node 8 has node 9 as a
+	 * child. This will later be used to demonstrate path
+	 * compression.
+	 *
+	 * You can view the union process below as the indexs 
+	 * begin to switch because the roots are now changing.
 	 */
 	cout << "ParPtrTree tests" << endl;
-	int sets[8] = {-1, 0, 0, -1, 3, 3, -1, 6};
-	ParPtrTree *par_ptr_tree = new ParPtrTree(sets, 8);
+	int sets[10] = {-1, 0, 0, -1, 3, 3, -1, 6, 7, 8};
+	ParPtrTree *par_ptr_tree = new ParPtrTree(sets, 10);
 	par_ptr_tree->viewTree();
+	// This test uses to tree roots
+	// Which does not cause path compression
+	// since there is never a chance to compress
 	par_ptr_tree->UNION(3, 6);
 	par_ptr_tree->viewTree();
-	par_ptr_tree->UNION(0, 3);
+	// This test uses a node and a tree root
+	// Which will cause path compression because
+	// the find goes through each node to get to
+	// the root. Creating compression from node 9
+	par_ptr_tree->UNION(1, 9);
 	par_ptr_tree->viewTree();
 
 	return 0;
