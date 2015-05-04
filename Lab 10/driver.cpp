@@ -2,10 +2,18 @@
 #include "graphm.h"
 #include "ParPtrTree.h"
 #include "heap.cpp"
+#include <string>
 
 using namespace std;
 
 int main(){
+	// cout << "Enter file name for graph input" << endl;
+	// cout << "It should be a csv where each row" << endl;
+	// cout << "Please include the file extension" << endl;
+	// cout << "is formatted like this: v1,v2,wt: ";
+	// string input_file;
+	// cin >> input_file; 
+	// Graph *graph = read_graph(input_file);
 	Graph *graph = read_graph("input.csv");
 	cout << "Graph tests" << endl;
 	cout << "isEdge tests" << endl;
@@ -42,7 +50,13 @@ int main(){
 	cout << graph->next(3, 2) << endl;
 	cout << graph->next(2, 1) << endl;
 
-	write_graph(graph, "output.csv");
+	cout << "Write graph test, check your local file "; 
+	cout << "systems current directory for output.csv" << endl;
+	GraphM *w_graph = new GraphM(3);
+	w_graph->setEdge(1, 2, 1);
+	w_graph->setEdge(1, 3, 5);
+	w_graph->setEdge(1, 4, 5);
+	write_graph(w_graph, "output.csv");
 
 	cout << "Heap tests" << endl;
 	int arr[15] = {5, 4, 3, 2, 1, 10, 9, 8, 7, 6};
