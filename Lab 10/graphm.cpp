@@ -21,14 +21,16 @@ GraphM::~GraphM(){ delete [] mark; delete [] edges; }
 void GraphM::Init(int n){
 	int i;
 	numVertex = n;
-	numEdge = 0;
-	mark = new int[n]; 
-	edges = new int[n];
+	numEdge = 0; 
 
-	for (i=0; i<numVertex; i++)
+	int arraySize = ((n - 1) * (n - 2))/2 + (n - 2);
+	edges = new int[arraySize + 1];
+	mark = new int[numVertex];
+
+	for (i = 0; i < numVertex; i++)
 		mark[i] = UNVISITED;
 
-	for (i = 0; i < numVertex; i++) 
+	for (i = 0; i < arraySize; i++) 
 		edges[i] = 0;
 }
 
@@ -67,8 +69,17 @@ int GraphM::getMark(int v){ return mark[v]; }
 void GraphM::setMark(int v, int val){ mark[v] = val; }
 
 int GraphM::calculate_edge(int v1, int v2){
-	if (v1 > v2) return calculate_edge(v2, v1);
+	if (v1 < v2) return calculate_edge(v2, v1);
 	return ((v1 * (v1 - 1)) / 2) + v2;
+}
+
+void GraphM::viewGraph(){
+	for (int i = 0; i < n(); i++) {
+		for (int w = next(i, i); w < n(); w = next(i,w)) {
+			cout << i << " - " << w << ": ";
+			cout << weight(i, w) << endl;
+		}
+	}
 }
 
 Graph* read_graph(string filename) {

@@ -8,9 +8,9 @@ using namespace std;
 
 ParPtrTree::ParPtrTree(int n){
 	array = new int[n];
-	for(int i = 0; i < size; i++)
-		array[i] = -99;
 	size = n;
+	for(int i = 0; i < size; i++)
+		array[i] = -1;
 }
 
 ParPtrTree::ParPtrTree(int *arr, int n){
@@ -49,8 +49,7 @@ bool ParPtrTree::differ(int i, int j){
 	// and false if do not differ
 	int iTree = FIND(i);
 	int jTree = FIND(j);
-	cout << iTree << " " << jTree << endl;
-	if(array[i] == -1 && array[j] == -1) return true;
+	// if(array[i] == -1 && array[j] == -1) return true;
 	return iTree != jTree;
 }
 

@@ -21,6 +21,7 @@ public:
 	int getMark(int v);
 	void setMark(int v, int val); 
 	int calculate_edge(int vertex1, int vertex2);
+	void viewGraph();
 };
 
 // Simple data structure used to store info
