@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <string>
+#include <vector>
 #include <algorithm>
 #include "graphm.h"
 #include "ParPtrTree.h"
@@ -167,6 +168,59 @@ void kruskalCmd(string command){
 	Kruskal(graph[n], graph[m]);
 }
 
+void extractCmd(string command){
+	int start_pos = command.find("extract");
+	command.erase(start_pos, 8);
+	int n = command[0] - 48;
+	int v = command[2] - 48;
+	int m = command[4] - 48;
+
+	Graph *g = graph[n];
+
+	vector<GraphInfo> graph_points;
+	for (int w = g->first(v); v < g->n() && g->weight(v, w) > -1; w = g->next(v,w)) {
+		GraphInfo temp;
+		temp.v1 = v;
+		temp.v2 = w;
+		temp.wt = g->weight(v, w);
+		graph_points.push_back(temp);
+	}
+
+	vector<int> vertices;
+	bool foundV1, foundV2;
+	int v1, v2;	
+	for(int i = 0; i < graph_points.size(); i++){
+		foundV1 = false;
+		foundV2 = false;
+		v1 = graph_points[i].v1;
+		v2 = graph_points[i].v2;
+		for(int j = 0; j < vertices.size(); j++){
+			if(v1 == vertices[j]){
+				foundV1 = true;
+			}
+			if(v2 == vertices[j]){
+				foundV2 = true;
+			}
+		}
+		if (!foundV1){
+			vertices.push_back(v1);
+		}
+		if (!foundV2){
+			vertices.push_back(v2);
+		}
+	}
+
+	Graph *new_graph = new GraphM(vertices.size());
+
+	for(int j = 0; j < graph_points.size(); j++){
+		new_graph->setEdge(graph_points[j].v1, 
+						   graph_points[j].v2, 
+						   graph_points[j].wt);
+	}
+
+	graph[m] = new_graph;
+}
+
 // This functions job is to disperse the
 // commands to the required functions as 
 // needed so that each individual command
@@ -196,7 +250,7 @@ void commandMux(){
 			kruskalCmd(cli_input);
 		}
 		else if (cli_input.find("extract") != string::npos){
-			cout << "Running extract" << endl;
+			extractCmd(cli_input);
 		}
 		else {
 			cout << cli_input << ": command not found" << endl;

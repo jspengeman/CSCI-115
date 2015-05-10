@@ -123,8 +123,31 @@ Graph* read_graph(string filename) {
 		points.push_back(temp);
 	}
 
-	// Create the graph object from the points in the vector
-	GraphM *new_graph = new GraphM(points.size());
+	// Get the vertice count
+	vector<int> vertices;
+	bool foundV1, foundV2;
+	for(int i = 0; i < points.size(); i++){
+		foundV1 = false;
+		foundV2 = false;
+		v1 = points[i].v1;
+		v2 = points[i].v2;
+		for(int j = 0; j < vertices.size(); j++){
+			if(v1 == vertices[j]){
+				foundV1 = true;
+			}
+			if(v2 == vertices[j]){
+				foundV2 = true;
+			}
+		}
+		if (!foundV1){
+			vertices.push_back(v1);
+		}
+		if (!foundV2){
+			vertices.push_back(v2);
+		}
+	}
+
+	GraphM *new_graph = new GraphM(vertices.size());
 	for(int i = 0; i < points.size(); i++){
 		new_graph->setEdge(points[i].v1, points[i].v2, points[i].wt);
 	}
