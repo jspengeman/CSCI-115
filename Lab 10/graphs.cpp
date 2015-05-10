@@ -87,6 +87,41 @@ int components(Graph* g, ParPtrTree* t) {
     return numofComps;
 }
 
+// This function assumes the user
+// enters the input string in the
+// exact format that was specified
+// in the lab write up
+void inputCmd(string command){
+	// Remove input from the command string
+	int start_pos = command.find("input");
+	command.erase(start_pos, 6);
+	int n = command[0] - 48;
+
+	// Remove the spaces before the string
+	command.erase(0, 2);
+
+	// command just contains the file name now
+	Graph *g = read_graph(command);
+	graph[n] = g;
+	cout << "input successful" << endl;
+}
+
+void outputCmd(string command){
+	// Remove input from the command string
+	int start_pos = command.find("output");
+	command.erase(start_pos, 7);
+	int n = command[0] - 48;
+	
+	// Remove the spaces before the string
+	command.erase(0, 2);
+
+	graph[n]->viewGraph();
+
+	// command just contains the file name now
+	write_graph(graph[n], command);
+	cout << "output successful" << endl;
+}
+
 // This functions job is to disperse the
 // commands to the required functions as 
 // needed so that each individual command
@@ -104,10 +139,10 @@ void commandMux(){
 			      ::tolower);
 
 		if (cli_input.find("input") != string::npos){
-			cout << "Running input" << endl;
+			inputCmd(cli_input);
 		}
 		else if (cli_input.find("output") != string::npos){
-			cout << "Running output" << endl;
+			outputCmd(cli_input);
 		}
 		else if (cli_input.find("info") != string::npos){
 			cout << "Running info" << endl;
