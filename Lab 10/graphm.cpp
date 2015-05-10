@@ -145,18 +145,15 @@ bool write_graph(Graph *g, string filename) {
 	output_file.open(filename);
 	int vertices = g->n();
 	int edges = g->e();
-	cout << vertices << endl;
 
-	// Output is a little off I am not sure what is wrong with this
-	for(int v = 0; v <= vertices; v++){
-		for(int w = 0; w <= vertices; w++){
-			if (g->isEdge(v, w) && g->weight(v, g->next(v, w)) != 0 && g->next(v, w) != vertices){
-				cout << "isEdge: (" << v << " " << g->next(v, w) << ") " << g->isEdge(v, g->next(v, w)) << endl;
-				output_file << v << "," << g->next(v, w) << "," << g->weight(v, g->next(v, w));
-				output_file << "\n"; 
-			}
-		}
-	}
+	int size = g->n();
+    for (int i = 0; i < size; ++i) {
+        for (int j = i + 1; j < size; ++j) {
+            if (g->isEdge(i,j)) {
+                output_file << i << ',' << j << ',' << g->weight(i,j) << '\n';
+            }
+        }
+    }
 
 	output_file.close();
 	return true;

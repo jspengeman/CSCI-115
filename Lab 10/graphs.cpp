@@ -111,15 +111,60 @@ void outputCmd(string command){
 	int start_pos = command.find("output");
 	command.erase(start_pos, 7);
 	int n = command[0] - 48;
+
+	// Checks if there is a graph at that location
+	if (graph[n] == NULL){
+		cout << "output unsuccesful" << endl;
+		return;
+	}
 	
 	// Remove the spaces before the string
 	command.erase(0, 2);
 
-	graph[n]->viewGraph();
-
 	// command just contains the file name now
 	write_graph(graph[n], command);
 	cout << "output successful" << endl;
+}
+
+void infoCmd(string command){
+	int start_pos = command.find("info");
+	command.erase(start_pos, 5);
+	int n = command[0] - 48;
+
+	// Checks if there is a graph at that location
+	if (graph[n] == NULL){
+		cout << "invalid register" << endl;
+		return;
+	}
+
+	// Display the graph data
+	cout << "graph at register " << n;
+	cout << " has " << graph[n]->n();
+	cout << " vertices, " << graph[n]->e();
+	cout << " edges, and "; 
+
+	ParPtrTree *t;
+	int comps = components(graph[n], t);
+	cout << comps << " components" << endl;
+}
+
+void kruskalCmd(string command){
+	int start_pos = command.find("kruskal");
+	command.erase(start_pos, 8);
+	int n = command[0] - 48;
+	int m = command[2] - 48;
+
+	ParPtrTree *t;
+	int comps = components(graph[n], t);
+	if (comps > 1){
+		cout << "graph is not connected" << endl;
+		return;
+	}
+
+	Graph *g = new GraphM(graph[n]->n());
+	graph[m] = g;
+
+	Kruskal(graph[n], graph[m]);
 }
 
 // This functions job is to disperse the
@@ -145,10 +190,10 @@ void commandMux(){
 			outputCmd(cli_input);
 		}
 		else if (cli_input.find("info") != string::npos){
-			cout << "Running info" << endl;
+			infoCmd(cli_input);
 		}
 		else if (cli_input.find("kruskal") != string::npos){
-			cout << "Running kruskal" << endl;
+			kruskalCmd(cli_input);
 		}
 		else if (cli_input.find("extract") != string::npos){
 			cout << "Running extract" << endl;
@@ -160,8 +205,9 @@ void commandMux(){
 }
 
 int main(){
+	// Intializing the registers
+	// with a couple of graphs
 	Graph *g = new GraphM(6);
-	// Example from openDSA
   	g->setEdge(0,2,7);
     g->setEdge(0,4,9);
     g->setEdge(1,2,5);
@@ -170,18 +216,32 @@ int main(){
     g->setEdge(2,4,3);
     g->setEdge(3,5,2);
     g->setEdge(4,5,1);
-    Graph *m = new GraphM(6);
-	graph[0] = m;
 
-    Kruskal(g, graph[0]);
-    graph[0]->viewGraph();
+    Graph *h = new GraphM(6);
+    h->setEdge(4,5,2);
+    h->setEdge(1,2,5);
+    h->setEdge(1,5,3);
+    h->setEdge(2,3,4);
+    h->setEdge(3,1,1);
+  	h->setEdge(0,2,1);
 
-    ParPtrTree *t;
-    cout << components(graph[0], t) << endl;
+    Graph *j = new GraphM(6);
+    j->setEdge(1,5,2);
+  	j->setEdge(0,2,7);
+    j->setEdge(4,5,3);
+    j->setEdge(1,2,2);
+    j->setEdge(3,4,1);
+    j->setEdge(2,4,9);
+    j->setEdge(2,3,5);
+
+    graph[0] = g;
+    graph[1] = h;
+    graph[2] = j;
 
     commandMux();
 
     delete g;
-    delete m;
+    delete h;
+    delete j;
 	return 0;
 }
