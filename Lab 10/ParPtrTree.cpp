@@ -49,7 +49,6 @@ bool ParPtrTree::differ(int i, int j){
 	// and false if do not differ
 	int iTree = FIND(i);
 	int jTree = FIND(j);
-	// if(array[i] == -1 && array[j] == -1) return true;
 	return iTree != jTree;
 }
 

@@ -28,6 +28,8 @@
 *.out
 *.app
 
+*.dSYM
+*/*.dSYM
 main
 *.pdf
 *.png

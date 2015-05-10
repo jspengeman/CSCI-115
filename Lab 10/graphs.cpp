@@ -1,4 +1,6 @@
 #include <iostream> 
+#include <string>
+#include <algorithm>
 #include "graphm.h"
 #include "ParPtrTree.h"
 #include "heap.cpp"
@@ -29,7 +31,7 @@ inline bool operator<(const KruskElem& lhs, const KruskElem& rhs){
 
 
 // Kruskal’s MST algorithm
-void Kruskel(Graph* G, Graph* m) { 
+void Kruskal(Graph* G, Graph* m) { 
 	// Equivalence class array
 	ParPtrTree *A = new ParPtrTree(G->n());
 	// Array of edges for min-heap
@@ -70,6 +72,58 @@ void Kruskel(Graph* G, Graph* m) {
 	delete []E;
 }
 
+int components(Graph* g, ParPtrTree* t) {
+    t = new ParPtrTree(g->n());
+    int numofComps = g->n();
+    for (int i = 0; i < g->n(); ++i) {
+        for (int w = g->next(i, i); 
+        	 w < g->n(); w = g->next(i, w)) {
+            if (t->differ(i, w)) {
+                t->UNION(i, w);
+                numofComps--;
+            }
+        }
+    }
+    return numofComps;
+}
+
+// This functions job is to disperse the
+// commands to the required functions as 
+// needed so that each individual command
+// line function can be treated as a module
+void commandMux(){
+	cout << "Enter commands. Enter exit() to quit." << endl;
+	string cli_input;
+	while(cli_input != "exit()"){
+		cout << "$ ";
+		getline(cin, cli_input);
+		// Make the string lower case
+		transform(cli_input.begin(), 
+			      cli_input.end(), 
+			      cli_input.begin(), 
+			      ::tolower);
+
+		if (cli_input.find("input") != string::npos){
+			cout << "Running input" << endl;
+		}
+		else if (cli_input.find("output") != string::npos){
+			cout << "Running output" << endl;
+		}
+		else if (cli_input.find("info") != string::npos){
+			cout << "Running info" << endl;
+		}
+		else if (cli_input.find("kruskal") != string::npos){
+			cout << "Running kruskal" << endl;
+		}
+		else if (cli_input.find("extract") != string::npos){
+			cout << "Running extract" << endl;
+		}
+		else {
+			cout << cli_input << ": command not found" << endl;
+		}
+	}
+}
+
 int main(){
 	Graph *g = new GraphM(6);
 	// Example from openDSA
@@ -82,24 +136,16 @@ int main(){
     g->setEdge(3,5,2);
     g->setEdge(4,5,1);
     Graph *m = new GraphM(6);
+	graph[0] = m;
 
-    graph[0] = m;
-
-    Kruskel(g, graph[0]);
+    Kruskal(g, graph[0]);
     graph[0]->viewGraph();
 
-    Graph *t = new GraphM(4);
-    t->setEdge(0, 1, 5);
-    t->setEdge(1, 2, 3);
-    t->setEdge(2, 3, 2);
-    t->setEdge(3, 4, 7);
-    Graph *f = new GraphM(4);
+    ParPtrTree *t;
+    cout << components(graph[0], t) << endl;
 
-    Kruskel(t, f);
-    f->viewGraph();
+    commandMux();
 
-    delete t;
-    delete f;
     delete g;
     delete m;
 	return 0;
